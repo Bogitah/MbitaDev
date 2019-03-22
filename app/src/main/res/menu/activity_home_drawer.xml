@@ -13,13 +13,14 @@
             android:icon="@drawable/ic_manifest"
             android:title="Manifest" />
         <item
+            android:id="@+id/payments_id"
+            android:icon="@drawable/ic_payments"
+            android:title="Payments" />
+        <item
             android:id="@+id/search_payments_id"
             android:icon="@drawable/ic_search_payments"
             android:title="Search Payments" />
-        <item
-            android:id="@+id/change_password_id"
-            android:icon="@drawable/ic_password"
-            android:title="Change Password" />
+
     </group>
 
 </menu>

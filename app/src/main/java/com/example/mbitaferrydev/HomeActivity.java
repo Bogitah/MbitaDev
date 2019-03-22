@@ -86,9 +86,9 @@ public class HomeActivity extends AppCompatActivity
             // Handle the camera action
         } else if (id == R.id.manifest_id) {
 
-        } else if (id == R.id.search_payments_id) {
+        } else if (id == R.id.payments_id) {
 
-        } else if (id == R.id.change_password_id) {
+        } else if (id == R.id.search_payments_id) {
 
         }
 

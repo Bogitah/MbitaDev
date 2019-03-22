@@ -9,8 +9,10 @@
     tools:context=".HomeActivity"
     tools:showIn="@layout/app_bar_home">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></RelativeLayout>
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        ></LinearLayout>
 
 </LinearLayout>
