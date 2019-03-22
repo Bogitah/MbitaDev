@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +51,8 @@ public class HomeInitialActivity extends AppCompatActivity {
 
     private FerryRouteCardArrayAdapter cardArrayAdapter;
     private ListView listView;
+    EditText username,password;
+    Dialog dialog;
 
 
     @Override
@@ -81,10 +84,10 @@ public class HomeInitialActivity extends AppCompatActivity {
 
 //                Toast.makeText(getApplicationContext(),selected, Toast.LENGTH_SHORT).show();
 
-                final Dialog dialog = new Dialog(context);
+                dialog = new Dialog(context);
                 dialog.setContentView(R.layout.login_dialog);
                 dialog.setTitle("      Account Login");
-                EditText username,password;
+
                 username=dialog.findViewById(R.id.editTextusername);
                 password=dialog.findViewById(R.id.editTextpassword);
 
@@ -94,10 +97,8 @@ public class HomeInitialActivity extends AppCompatActivity {
                 dialogButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        dialog.dismiss();
+                        login();
 
-                        Toast.makeText(getApplicationContext(),"Welcome", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getApplicationContext(),HomeActivity.class));
 
                     }
                 });
@@ -108,6 +109,100 @@ public class HomeInitialActivity extends AppCompatActivity {
 
     }
 
+    private void login() {
+
+        final String email = username.getText().toString();
+        final String pass=password.getText().toString();
+
+
+
+        //validating inputs
+        if (TextUtils.isEmpty(email)) {
+            username.setError("Please enter your email address or phone");
+            username.requestFocus();
+            return;
+        }
+
+        if (TextUtils.isEmpty(pass)) {
+            password.setError("Please enter your password");
+            password.requestFocus();
+            return;
+        } else {
+
+
+            RequestQueue reserverequestQueue = Volley.newRequestQueue(HomeInitialActivity.this);
+            HashMap<String, String> params = new HashMap<String, String>();
+            params.put("username", "rWIv7GWzSp");
+            params.put("api_key", "831b238c5cd73308520e38bbc6c1774f470a89e96d07a5bb6bcac3b86456f889");
+            params.put("action", "UserLogin");
+            params.put("clerk_username", email);
+            params.put("clerk_password", pass);
+
+
+            JsonObjectRequest req = new JsonObjectRequest(ApiUrls.apiUrl, new JSONObject(params),
+                    response -> {
+                        try {
+
+                            if (response.getInt("response_code") == 0) {
+                                String first_name = response.getString("first_name");
+                                String last_name = response.getString("last_name");
+
+
+                                dialog.dismiss();
+
+
+                                Log.d("log in ", first_name);
+
+
+                                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), response.getString("response_message"), Toast.LENGTH_SHORT).show();
+
+                            }
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+
+
+                    } else if (error instanceof AuthFailureError) {
+                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    } else if (error instanceof ServerError) {
+                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    } else if (error instanceof NetworkError) {
+                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    } else if (error instanceof ParseError) {
+                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+            })
+
+            {
+                @Override
+                public String getBodyContentType() {
+                    return "application/x-www-form-urlencoded; charset=utf-8";
+                }
+
+
+            };
+//            reserverequestQueue.getCache().clear();
+
+            reserverequestQueue.add(req);
+
+        }
+    }
 
 
     private void loadFerryRoutes() {
