@@ -1,8 +1,10 @@
 package com.example.mbitaferrydev;
 
+import android.content.ClipData;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,9 +14,35 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.ExpandableListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.mbitaferrydev.CustomAdapters.ExpandableListAdapter;
+import com.example.mbitaferrydev.Models.ExpandableListDataPump;
+import com.multilevelview.MultiLevelRecyclerView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+
+    private Button upButton, downButton;
+
+    private TextView editText;
+    private int uprange = 10;
+    private int downrange = 0;
+    private int values = 0;
+
+    ExpandableListView expandableListView;
+    ExpandableListAdapter expandableListAdapter;
+    List<String> expandableListTitle;
+    HashMap<String, List<String>> expandableListDetail;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,17 +50,99 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-/*
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+
+
+
+        expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
+        expandableListDetail = ExpandableListDataPump.getData();
+        expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
+        expandableListAdapter = new ExpandableListAdapter(this, expandableListTitle, expandableListDetail);
+        expandableListView.setAdapter(expandableListAdapter);
+        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onGroupExpand(int groupPosition) {
+                Toast.makeText(getApplicationContext(),
+                        expandableListTitle.get(groupPosition) + " List Expanded.",
+                        Toast.LENGTH_SHORT).show();
             }
         });
-*/
+
+        expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+
+            @Override
+            public void onGroupCollapse(int groupPosition) {
+                Toast.makeText(getApplicationContext(),
+                        expandableListTitle.get(groupPosition) + " List Collapsed.",
+                        Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v,
+                                        int groupPosition, int childPosition, long id) {
+                Toast.makeText(
+                        getApplicationContext(),
+                        expandableListTitle.get(groupPosition)
+                                + " -> "
+                                + expandableListDetail.get(
+                                expandableListTitle.get(groupPosition)).get(
+                                childPosition), Toast.LENGTH_SHORT
+                )
+                        .show();
+                return false;
+            }
+        });
+
+
+
+
+
+
+        editText = (TextView) findViewById(R.id.numberEditText);
+
+        upButton = (Button) findViewById(R.id.upButton);
+        upButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+//                downButton
+//                        .setBackgroundResource(R.drawable.timepicker_down_normal);
+//                upButton.setBackgroundResource(R.drawable.timepicker_up_pressed);
+
+                values=Integer.valueOf(editText.getText().toString());
+                if (values >= downrange && values <= uprange)
+                    values += 1;
+                if (values > uprange)
+                    values = downrange;
+                editText.setText("" + values);
+
+            }
+        });
+
+        downButton = (Button) findViewById(R.id.downButton);
+        downButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+//                downButton
+//                        .setBackgroundResource(R.drawable.timepicker_down_pressed);
+//                upButton.setBackgroundResource(R.drawable.timepicker_up_normal);
+                values=Integer.valueOf(editText.getText().toString());
+
+                if (values >= downrange && values <= uprange)
+                    values -= 1;
+
+                if (values < downrange)
+                    values = uprange;
+
+                editText.setText(values + "");
+            }
+        });
+
+
+
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
