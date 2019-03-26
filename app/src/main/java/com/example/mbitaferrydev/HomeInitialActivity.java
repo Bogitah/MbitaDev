@@ -1,6 +1,7 @@
 package com.example.mbitaferrydev;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -51,8 +52,9 @@ public class HomeInitialActivity extends AppCompatActivity {
 
     private FerryRouteCardArrayAdapter cardArrayAdapter;
     private ListView listView;
-    EditText username,password;
+    EditText username, password;
     Dialog dialog;
+    ProgressDialog progressDialog;
 
 
     @Override
@@ -75,8 +77,7 @@ public class HomeInitialActivity extends AppCompatActivity {
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 String selected = String.valueOf(listView.indexOfChild(view));
 
@@ -88,8 +89,8 @@ public class HomeInitialActivity extends AppCompatActivity {
                 dialog.setContentView(R.layout.login_dialog);
                 dialog.setTitle("      Account Login");
 
-                username=dialog.findViewById(R.id.editTextusername);
-                password=dialog.findViewById(R.id.editTextpassword);
+                username = dialog.findViewById(R.id.editTextusername);
+                password = dialog.findViewById(R.id.editTextpassword);
 
                 Button dialogButton = (Button) dialog.findViewById(R.id.btnlogin);
 
@@ -98,22 +99,38 @@ public class HomeInitialActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         login();
-
-
+                        progressDialog = new ProgressDialog(HomeInitialActivity.this);
+                        progressDialog.setMessage("Loading...");
+                        progressDialog.setTitle("Login In");
+                        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
+                        progressDialog.show(); // Display Progress Dialog
+                        progressDialog.setCancelable(false);
+                        new Thread(new Runnable() {
+                            public void run() {
+                                try {
+                                    Thread.sleep(10000);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                progressDialog.dismiss();
+                            }
+                        }).start();
                     }
+
+
                 });
                 dialog.show();
 
 
-            }});
+            }
+        });
 
     }
 
     private void login() {
 
         final String email = username.getText().toString();
-        final String pass=password.getText().toString();
-
+        final String pass = password.getText().toString();
 
 
         //validating inputs
@@ -152,6 +169,7 @@ public class HomeInitialActivity extends AppCompatActivity {
 
 
                                 Log.d("log in ", first_name);
+                                progressDialog.dismiss();
 
 
                                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));
@@ -187,9 +205,7 @@ public class HomeInitialActivity extends AppCompatActivity {
 
                     }
                 }
-            })
-
-            {
+            }) {
                 @Override
                 public String getBodyContentType() {
                     return "application/x-www-form-urlencoded; charset=utf-8";
@@ -231,7 +247,7 @@ public class HomeInitialActivity extends AppCompatActivity {
                                     JSONObject jsonObject1 = jsonArray.getJSONObject(i);
                                     String ferry_route = jsonObject1.getString("route");
 
-                                    String name=ferry_route.substring(8);
+                                    String name = ferry_route.substring(8);
 
 
                                     Log.d("Ferry Routes: ", ferry_route);
@@ -248,7 +264,6 @@ public class HomeInitialActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), response.getString("response_message"), Toast.LENGTH_SHORT).show();
 
                             }
-
 
 
                             listView.setAdapter(cardArrayAdapter);

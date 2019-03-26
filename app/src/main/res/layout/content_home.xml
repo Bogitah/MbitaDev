@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".HomeActivity"
-    android:weightSum="3"
-
-    tools:showIn="@layout/app_bar_home">
-
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
     <ExpandableListView
         android:id="@+id/expandableListView"
         android:layout_height="match_parent"
@@ -19,14 +12,34 @@
         android:divider="#A4C739"
         android:dividerHeight="0.5dp" />
 
+    <TextView
+        android:id="@+id/expandedListItem"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="Adult Standard" />
+
+
+>>>>>>> 46ec17f401bb23bc698f45ff3e38507b35a600b0
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="right|center"
+            android:layoutDirection="rtl"
+            android:text="Select" />
+
+
         <Button
-            android:id="@+id/upButton"
+            android:id="@+id/downButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -47,7 +60,7 @@
             android:textColor="#000000" />
 
         <Button
-            android:id="@+id/downButton"
+            android:id="@+id/upButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -56,4 +69,7 @@
             android:text="+" />
 
     </LinearLayout>
+
 </LinearLayout>
+
+
