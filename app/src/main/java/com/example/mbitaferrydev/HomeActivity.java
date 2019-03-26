@@ -36,7 +36,7 @@ public class HomeActivity extends AppCompatActivity
     private TextView editText;
     private int uprange = 10;
     private int downrange = 0;
-    private int values = 0;
+    private int values = 1;
 
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
@@ -52,56 +52,6 @@ public class HomeActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-
-
-        expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
-        expandableListDetail = ExpandableListDataPump.getData();
-        expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
-        expandableListAdapter = new ExpandableListAdapter(this, expandableListTitle, expandableListDetail);
-        expandableListView.setAdapter(expandableListAdapter);
-        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
-                        expandableListTitle.get(groupPosition) + " List Expanded.",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
-                        expandableListTitle.get(groupPosition) + " List Collapsed.",
-                        Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-                Toast.makeText(
-                        getApplicationContext(),
-                        expandableListTitle.get(groupPosition)
-                                + " -> "
-                                + expandableListDetail.get(
-                                expandableListTitle.get(groupPosition)).get(
-                                childPosition), Toast.LENGTH_SHORT
-                )
-                        .show();
-                return false;
-            }
-        });
-
-
-
-
-
-
         editText = (TextView) findViewById(R.id.numberEditText);
 
         upButton = (Button) findViewById(R.id.upButton);
@@ -112,12 +62,11 @@ public class HomeActivity extends AppCompatActivity
 //                        .setBackgroundResource(R.drawable.timepicker_down_normal);
 //                upButton.setBackgroundResource(R.drawable.timepicker_up_pressed);
 
-                values=Integer.valueOf(editText.getText().toString());
-                if (values >= downrange && values <= uprange)
-                    values += 1;
-                if (values > uprange)
-                    values = downrange;
+//                values=Integer.valueOf(editText.getText().toString());
+                values += 1;
+
                 editText.setText("" + values);
+
 
             }
         });
@@ -128,20 +77,24 @@ public class HomeActivity extends AppCompatActivity
 //                downButton
 //                        .setBackgroundResource(R.drawable.timepicker_down_pressed);
 //                upButton.setBackgroundResource(R.drawable.timepicker_up_normal);
-                values=Integer.valueOf(editText.getText().toString());
+//                values=Integer.valueOf(editText.getText().toString());
 
-                if (values >= downrange && values <= uprange)
-                    values -= 1;
 
-                if (values < downrange)
-                    values = uprange;
+                values -= 1;
+
+                if (values < 0) {
+
+
+                    editText.setText("" + 1);
+                } else {
+                    editText.setText("" + values);
+
+                }
+
 
                 editText.setText(values + "");
             }
         });
-
-
-
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
