@@ -12,7 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SearchTicketActivity"></activity>
+        <activity android:name=".SearchPaymentsActivity"></activity>
+        <activity android:name=".PaymentsActivity" />
+        <activity android:name=".ManifestActivity" />
+        <activity android:name=".SearchTicketActivity" />
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"

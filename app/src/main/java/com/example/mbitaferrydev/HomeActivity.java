@@ -151,11 +151,11 @@ public class HomeActivity extends AppCompatActivity
 
             // Handle the camera action
         } else if (id == R.id.manifest_id) {
-
+            startActivity(new Intent(getApplicationContext(), ManifestActivity.class));
         } else if (id == R.id.payments_id) {
-
+            startActivity(new Intent(getApplicationContext(), PaymentsActivity.class));
         } else if (id == R.id.search_payments_id) {
-
+            startActivity(new Intent(getApplicationContext(), SearchPaymentsActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
