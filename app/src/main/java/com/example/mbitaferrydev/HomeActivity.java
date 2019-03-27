@@ -1,5 +1,6 @@
 package com.example.mbitaferrydev;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -11,28 +12,21 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkError;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
-import com.android.volley.RequestQueue;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
-import com.example.mbitaferrydev.BaseUrl.ApiUrls;
 import com.example.mbitaferrydev.Database.DatabaseHelper;
 import com.example.mbitaferrydev.Database.TicketCount;
+import com.nbbse.printapi.Printer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity
@@ -44,7 +38,8 @@ public class HomeActivity extends AppCompatActivity
 
     private DatabaseHelper db;
     private List<TicketCount> ticketsList = new ArrayList<>();
-
+    int number_of_seates;
+    Button btnprocess;
 
 
     @Override
@@ -57,16 +52,21 @@ public class HomeActivity extends AppCompatActivity
         db = new DatabaseHelper(this);
 
 
+        Log.d("Inserted: ", db.loadTickets());
+        Toast.makeText(getApplicationContext(), "Tickets Available " + db.loadTickets(), Toast.LENGTH_SHORT).show();
 
-        Log.d("Inserted: ",db.loadTickets());
-        Toast.makeText(getApplicationContext(), "Tickets Available "+db.loadTickets(), Toast.LENGTH_SHORT).show();
-
-
-
-
+        number_of_seates = Integer.valueOf(db.loadTickets());
+        Log.d("Number of Tickets: ", String.valueOf(number_of_seates));
 
 
+        btnprocess=findViewById(R.id.btnprocess);
 
+        btnprocess.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                printTicket();
+            }
+        });
 
 
         btnadult = (ElegantNumberButton) findViewById(R.id.btnadult);
@@ -94,8 +94,6 @@ public class HomeActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
-
-
 
 
     @Override
@@ -149,6 +147,43 @@ public class HomeActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    private void printTicket() {
+        String currentDateandTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        if (Build.MODEL.equals("MobiPrint")) {
+
+
+            Toast.makeText(getApplicationContext(), "Mobiwire Printing Ticket", Toast.LENGTH_LONG).show();
+            Printer print = Printer.getInstance();
+            print.printFormattedText();
+//                    print.printBitmap(getResources().openRawResource(R.raw.ena_coach_logo24bit));
+            print.printText("-----------Mbita Ferry----------");
+            print.printText("--------PO BOX 152-40202-------");
+            print.printText("..........Mbita,KENYA..........");
+            print.printText("......Passenger Details.........");
+//                    print.printText("Name: " + name);
+//                    print.printText("Ref No:" + json_obj.getString("merchant_transaction_id"));
+//                    print.printText("Phone No:" + phone);
+//                    print.printText("Seat:" +seat);
+//                    print.printText("Fare: Ksh." + json_obj.getString("fare"));
+//                    print.printText("................................");
+//                    print.printText("......Vehicle Details.........");
+//                    print.printText("Vehicle:" + json_obj.getString("bus"));
+//                    print.printText("Route:" + json_obj.getString("route"));
+//                    print.printText("Travel Date: " + json_obj.getString("travel_date"));
+//                    print.printText("................................");
+                    print.printText("Issued On :" + currentDateandTime);
+//                    print.printText("Issued by :" + app.getLogged_user());
+//                    print.printBitmap(getResources().openRawResource(R.raw.payment_methods_old));
+//                    print.printBitmap(getResources().openRawResource(R.raw.powered_by_mobiticket));
+            print.printEndLine();
+
+
+        }
+
+
     }
 
 

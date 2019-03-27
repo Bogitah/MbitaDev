@@ -37,6 +37,12 @@ dependencies {
     implementation 'com.muditsen.multilevelrecyclerview:multilevelview:1.0.0'
     implementation 'com.cepheuen.elegant-number-button:lib:1.0.2'
 
+    implementation files('libs/MP3_Api_V0.6.jar')
+    implementation files('libs/BixolonPrinterWithDoubleByteFontBinaryV236.jar')
+    implementation files('libs/ePOS2.jar')
+
+
+
 
 
 }
