@@ -11,8 +11,29 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
+import com.android.volley.RequestQueue;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
+import com.example.mbitaferrydev.BaseUrl.ApiUrls;
+import com.example.mbitaferrydev.Database.DatabaseHelper;
+import com.example.mbitaferrydev.Database.TicketCount;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -21,6 +42,11 @@ public class HomeActivity extends AppCompatActivity
     private static final String TAG = "Number";
     ElegantNumberButton btnadult;
 
+    private DatabaseHelper db;
+    private List<TicketCount> ticketsList = new ArrayList<>();
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,51 +54,18 @@ public class HomeActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        db = new DatabaseHelper(this);
 
-//
-//        editText = findViewById(R.id.numberEditText);
-//
-//        upButton = findViewById(R.id.upButton);
-//        upButton.setOnClickListener(new View.OnClickListener() {
-//
-//            public void onClick(View v) {
-////                downButton
-////                        .setBackgroundResource(R.drawable.timepicker_down_normal);
-////                upButton.setBackgroundResource(R.drawable.timepicker_up_pressed);
-//
-////                values=Integer.valueOf(editText.getText().toString());
-//                values += 1;
-//
-//                editText.setText("" + values);
-//
-//
-//            }
-//        });
-//
-//        downButton = findViewById(R.id.downButton);
-//        downButton.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-////                downButton
-////                        .setBackgroundResource(R.drawable.timepicker_down_pressed);
-////                upButton.setBackgroundResource(R.drawable.timepicker_up_normal);
-////                values=Integer.valueOf(editText.getText().toString());
-//
-//
-//                values -= 1;
-//
-//                if (values < 0) {
-//
-//
-//                    editText.setText("" + 1);
-//                } else {
-//                    editText.setText("" + values);
-//
-//                }
-//
-//
-//                editText.setText(values + "");
-//            }
-//        });
+
+
+        Log.d("Inserted: ",db.loadTickets());
+        Toast.makeText(getApplicationContext(), "Tickets Available "+db.loadTickets(), Toast.LENGTH_SHORT).show();
+
+
+
+
+
+
 
 
 
@@ -101,6 +94,9 @@ public class HomeActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
+
+
 
     @Override
     public void onBackPressed() {
@@ -154,4 +150,6 @@ public class HomeActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 }

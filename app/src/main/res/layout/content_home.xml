@@ -83,9 +83,11 @@
                     android:layout_height="match_parent"
                     android:layout_centerInParent="true"
                     android:layout_weight="1"
-                    android:gravity="center_vertical|right"
+                    android:gravity="center_vertical"
                     android:padding="@dimen/activity_horizontal_margin"
                     android:text="Adult"
+                    android:textColor="@color/HeaderText"
+
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
@@ -128,6 +130,8 @@
                     android:layout_weight="1"
                     android:padding="@dimen/activity_horizontal_margin"
                     android:text="Big Animal"
+                    android:textColor="@color/HeaderText"
+
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
@@ -148,6 +152,7 @@
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true"
                     android:layout_weight="1"
+                    android:gravity="center_horizontal|left"
                     android:padding="@dimen/activity_horizontal_margin"
                     app:backGroundColor="@color/colorPrimary"
                     app:textSize="18sp" />
@@ -170,15 +175,16 @@
                     android:layout_weight="1"
                     android:padding="@dimen/activity_horizontal_margin"
                     android:text="Big Truck"
+                    android:textColor="@color/HeaderText"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
 
                 <CheckBox
-                    android:layout_width="99dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center_vertical|right"
+                    android:gravity="center_vertical"
                     android:layoutDirection="rtl"
 
                     android:padding="@dimen/activity_horizontal_margin" />
@@ -190,6 +196,7 @@
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true"
                     android:layout_weight="1"
+                    android:gravity="center_horizontal|left"
                     android:padding="@dimen/activity_horizontal_margin"
                     app:backGroundColor="@color/colorPrimary"
                     app:textSize="18sp" />
@@ -213,6 +220,7 @@
                     android:gravity="center_vertical|left"
                     android:padding="@dimen/activity_horizontal_margin"
                     android:text="Child"
+                    android:textColor="@color/HeaderText"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
@@ -233,6 +241,7 @@
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true"
                     android:layout_weight="1"
+                    android:gravity="center_horizontal|start"
                     android:padding="@dimen/activity_horizontal_margin"
                     app:backGroundColor="@color/colorPrimary"
                     app:textSize="18sp" />
@@ -256,6 +265,8 @@
                     android:gravity="center_vertical|left"
                     android:padding="@dimen/activity_horizontal_margin"
                     android:text="Luggage"
+                    android:textColor="@color/HeaderText"
+
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
@@ -298,6 +309,8 @@
                     android:layout_weight="1"
                     android:padding="@dimen/activity_horizontal_margin"
                     android:text="Motor Cycle"
+                    android:textColor="@color/HeaderText"
+
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
@@ -341,6 +354,7 @@
                     android:gravity="center_vertical|left"
                     android:padding="@dimen/activity_horizontal_margin"
                     android:text="Other"
+                    android:textColor="@color/HeaderText"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
@@ -383,6 +397,7 @@
                     android:layout_weight="1"
                     android:padding="@dimen/activity_horizontal_margin"
                     android:text="Saloon Car"
+                    android:textColor="@color/HeaderText"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
@@ -425,6 +440,7 @@
                     android:layout_weight="1"
                     android:padding="@dimen/activity_horizontal_margin"
                     android:text="Small Animal"
+                    android:textColor="@color/HeaderText"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
@@ -466,6 +482,7 @@
                     android:layout_weight="1"
                     android:padding="@dimen/activity_horizontal_margin"
                     android:text="Small Truck"
+                    android:textColor="@color/HeaderText"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
@@ -507,6 +524,7 @@
                     android:layout_weight="1"
                     android:padding="@dimen/activity_horizontal_margin"
                     android:text="Station Wagon"
+                    android:textColor="@color/HeaderText"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
@@ -548,6 +566,8 @@
                     android:layout_weight="1"
                     android:padding="@dimen/activity_horizontal_margin"
                     android:text="Tuk Tuk"
+                    android:textColor="@color/HeaderText"
+
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
