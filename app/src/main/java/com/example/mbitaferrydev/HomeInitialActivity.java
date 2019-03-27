@@ -33,6 +33,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.mbitaferrydev.BaseUrl.ApiUrls;
 import com.example.mbitaferrydev.CustomAdapters.FerryRouteCardArrayAdapter;
+import com.example.mbitaferrydev.Database.DatabaseHelper;
+import com.example.mbitaferrydev.Database.TicketCount;
 import com.example.mbitaferrydev.Models.Routes;
 import com.orhanobut.simplelistview.SimpleListView;
 
@@ -55,6 +57,10 @@ public class HomeInitialActivity extends AppCompatActivity {
     EditText username, password;
     Dialog dialog;
     ProgressDialog progressDialog;
+    private DatabaseHelper db;
+    String seats;
+
+
 
 
     @Override
@@ -74,6 +80,10 @@ public class HomeInitialActivity extends AppCompatActivity {
 
 
         loadFerryRoutes();
+
+        db = new DatabaseHelper(this);
+
+
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -256,6 +266,9 @@ public class HomeInitialActivity extends AppCompatActivity {
 
                                     cardArrayAdapter.add(card);
 
+                                    loadTickets();
+
+
                                 }
 
 
@@ -304,5 +317,80 @@ public class HomeInitialActivity extends AppCompatActivity {
 
     }
 
+
+
+    private void loadTickets() {
+
+
+        RequestQueue requestQueue = Volley.newRequestQueue(HomeInitialActivity.this);
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("username", "emuswailit");
+        params.put("api_key", "c8e254c0adbe4b2623ff85567027d78d4cc066357627e284d4b4a01b159d97a7");
+        params.put("action", "SearchSchedule");
+        params.put("travel_from", "3");
+        params.put("travel_to", "1");
+        params.put("travel_date", "27-10-2018");
+        params.put("hash", "1FBEAD9B-D9CD-400D-ADF3-F4D0E639CEE0");
+
+
+        JsonObjectRequest req = new JsonObjectRequest(ApiUrls.apiUrl, new JSONObject(params),
+                response -> {
+                    try {
+
+                        if (response.getInt("response_code") == 0) {
+                            JSONArray jsonArray = response.getJSONArray("bus");
+
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                                seats = jsonObject1.getString("total_seats");
+
+
+                                Log.d("Count", String.valueOf(seats));
+
+                                // Inserting Contacts
+                                Log.d("Insert: ", "Inserting ..");
+
+
+
+                            }
+
+                            db.addCount(new TicketCount(seats));
+
+
+                        } else {
+                            Toast.makeText(getApplicationContext(), response.getString("response_message"), Toast.LENGTH_SHORT).show();
+
+                        }
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }, error -> {
+            if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            } else if (error instanceof AuthFailureError) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            } else if (error instanceof ServerError) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            } else if (error instanceof NetworkError) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            } else if (error instanceof ParseError) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=utf-8";
+            }
+
+
+        };
+
+        requestQueue.add(req);
+
+
+    }
 
 }
