@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@color/colorPrimary"
-android:orientation="vertical"
-android:scrollbarAlwaysDrawVerticalTrack="true">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="260dp"
+
+    android:layout_margin="40dp"
+    android:background="@drawable/custom_round_corners"
+    android:orientation="vertical"
+    android:scrollbarAlwaysDrawVerticalTrack="true">
 
 
     <RelativeLayout
-        android:layout_width="351dp"
-        android:layout_height="308dp"
+        android:layout_width="357dp"
+        android:layout_height="match_parent"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="30dp"
@@ -21,7 +25,7 @@ android:scrollbarAlwaysDrawVerticalTrack="true">
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="318dp"
             android:layout_height="match_parent"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
@@ -29,50 +33,51 @@ android:scrollbarAlwaysDrawVerticalTrack="true">
             android:paddingTop="6dp"
             android:paddingBottom="16dp">
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="1dp">
+                android:layout_height="wrap_content">
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextusername"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
                     android:layout_marginTop="15dp"
                     android:drawableTint="#FF4081"
                     android:hint="User Name"
-                    android:inputType="textEmailAddress"
+                    android:inputType="text"
                     android:singleLine="true" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp">
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
+
                     android:id="@+id/editTextpassword"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:drawableTint="#FF4081"
+
                     android:hint="Password"
                     android:inputType="textPassword"
                     android:singleLine="true" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnlogin"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_height="match_parent"
                 android:background="@color/colorPrimaryDark"
-                android:text="Sign in"
-                android:textAllCaps="false"
-                android:textColor="#fff"
-                android:textSize="18sp" />
+                android:text="sign in"
+
+                />
+
         </LinearLayout>
     </RelativeLayout>
 

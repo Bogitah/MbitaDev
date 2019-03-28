@@ -4,12 +4,12 @@ package com.example.mbitaferrydev;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.example.mbitaferrydev.Database.DatabaseHelper;
 import com.example.mbitaferrydev.Database.TicketCount;
+import com.google.android.material.navigation.NavigationView;
 import com.nbbse.printapi.Printer;
 
 import java.text.SimpleDateFormat;
@@ -53,7 +54,16 @@ public class HomeActivity extends AppCompatActivity
         Log.d("Inserted: ", db.loadTickets());
         Toast.makeText(getApplicationContext(), "Tickets Available " + db.loadTickets(), Toast.LENGTH_SHORT).show();
 
-        number_of_seates = Integer.valueOf(db.loadTickets());
+
+        if(db.loadTickets().equals("")){
+            number_of_seates = Integer.valueOf("0");
+
+
+        }else {
+            number_of_seates = Integer.valueOf(db.loadTickets());
+
+        }
+
         Log.d("Number of Tickets: ", String.valueOf(number_of_seates));
 
 

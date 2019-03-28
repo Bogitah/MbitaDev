@@ -3,7 +3,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="2dp"
     android:orientation="vertical">
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,12 +17,13 @@
             android:id="@+id/button13"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="3dp"
             android:layout_weight="1"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:textColor="#ffffff"
             android:background="@drawable/bg_color"
-            android:text="Remaining Tickets" />
+            android:gravity="center"
+            android:text="Remaining Tickets"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
@@ -31,24 +34,25 @@
         android:background="@drawable/btn_border"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/button1"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnupdate"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textColor="#ffffff"
-
             android:background="@drawable/bg_color"
-            android:text="Update" />
+            android:text="Update"
+            android:textAlignment="center"
+            android:textColor="#ffffff" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnprocess"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/bg_color"
             android:text="Process"
-            android:textColor="#ffffff"/>
+            android:textColor="#ffffff" />
 
 
     </LinearLayout>
@@ -95,7 +99,7 @@
                     android:id="@+id/btnadult"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.9"
                     android:gravity="center_horizontal|left"
                     android:padding="@dimen/activity_horizontal_margin"
                     app:backGroundColor="@color/colorPrimary"
@@ -118,8 +122,8 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:background="@drawable/btn_border"
                 android:layout_margin="3dp"
+                android:background="@drawable/btn_border"
 
                 android:orientation="horizontal">
 
@@ -148,18 +152,15 @@
                     app:textSize="14sp" />
 
 
-
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:layout_margin="10dp"
 
                     android:layoutDirection="rtl"
-                    android:padding="@dimen/activity_horizontal_margin"
-                    />
-
+                    android:padding="@dimen/activity_horizontal_margin" />
 
 
             </LinearLayout>
@@ -168,8 +169,8 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:background="@drawable/btn_border"
                 android:layout_margin="3dp"
+                android:background="@drawable/btn_border"
                 android:orientation="horizontal">
 
 
@@ -201,14 +202,13 @@
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
                     android:layout_margin="10dp"
+                    android:layout_weight="1"
 
                     android:gravity="center_vertical"
                     android:layoutDirection="rtl"
 
                     android:padding="@dimen/activity_horizontal_margin" />
-
 
 
             </LinearLayout>
@@ -217,8 +217,8 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:background="@drawable/btn_border"
                 android:layout_margin="3dp"
+                android:background="@drawable/btn_border"
                 android:orientation="horizontal">
 
 
@@ -247,18 +247,16 @@
                     app:textSize="14sp" />
 
 
-
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:layout_margin="10dp"
 
                     android:layoutDirection="rtl"
 
                     android:padding="@dimen/activity_horizontal_margin" />
-
 
 
             </LinearLayout>
@@ -267,8 +265,8 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:background="@drawable/btn_border"
                 android:layout_margin="3dp"
+                android:background="@drawable/btn_border"
                 android:orientation="horizontal">
 
 
@@ -297,18 +295,16 @@
                     app:textSize="14sp" />
 
 
-
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:gravity="center_vertical|right"
                     android:layoutDirection="rtl"
-                    android:layout_margin="10dp"
 
 
                     android:padding="@dimen/activity_horizontal_margin" />
-
 
 
             </LinearLayout>
@@ -317,8 +313,8 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:background="@drawable/btn_border"
                 android:layout_margin="3dp"
+                android:background="@drawable/btn_border"
                 android:orientation="horizontal">
 
 
@@ -347,13 +343,12 @@
                     app:textSize="14sp" />
 
 
-
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:layout_margin="10dp"
                     android:layoutDirection="rtl"
 
                     android:padding="@dimen/activity_horizontal_margin" />
@@ -365,8 +360,8 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:background="@drawable/btn_border"
                 android:layout_margin="3dp"
+                android:background="@drawable/btn_border"
                 android:orientation="horizontal">
 
 
@@ -398,13 +393,11 @@
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:layout_margin="10dp"
                     android:layoutDirection="rtl"
                     android:padding="@dimen/activity_horizontal_margin" />
-
-
 
 
             </LinearLayout>
@@ -413,8 +406,8 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:background="@drawable/btn_border"
                 android:layout_margin="3dp"
+                android:background="@drawable/btn_border"
                 android:orientation="horizontal">
 
 
@@ -444,14 +437,12 @@
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:layout_margin="10dp"
                     android:layoutDirection="rtl"
 
                     android:padding="@dimen/activity_horizontal_margin" />
-
-
 
 
             </LinearLayout>
@@ -491,14 +482,12 @@
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:layoutDirection="rtl"
-                    android:layout_margin="10dp"
 
                     android:padding="@dimen/activity_horizontal_margin" />
-
-
 
 
             </LinearLayout>
@@ -506,8 +495,8 @@
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
-                android:layout_margin="3dp"
                 android:layout_height="80dp"
+                android:layout_margin="3dp"
                 android:background="@drawable/btn_border"
                 android:orientation="horizontal">
 
@@ -537,13 +526,11 @@
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:layoutDirection="rtl"
-                    android:layout_margin="10dp"
                     android:padding="@dimen/activity_horizontal_margin" />
-
-
 
 
             </LinearLayout>
@@ -552,8 +539,8 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_border"
                 android:layout_margin="3dp"
+                android:background="@drawable/btn_border"
                 android:orientation="horizontal">
 
 
@@ -583,12 +570,11 @@
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:layoutDirection="rtl"
-                    android:layout_margin="10dp"
                     android:padding="@dimen/activity_horizontal_margin" />
-
 
 
             </LinearLayout>
@@ -597,8 +583,8 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_border"
                 android:layout_margin="3dp"
+                android:background="@drawable/btn_border"
                 android:orientation="horizontal">
 
 
@@ -628,14 +614,12 @@
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
                     android:layout_margin="10dp"
+                    android:layout_weight="1"
                     android:gravity="center"
                     android:layoutDirection="rtl"
 
                     android:padding="@dimen/activity_horizontal_margin" />
-
-
 
 
             </LinearLayout>
