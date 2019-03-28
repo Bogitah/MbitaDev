@@ -145,7 +145,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.9"
                     android:gravity="center_horizontal|left"
                     android:padding="@dimen/activity_horizontal_margin"
                     app:backGroundColor="@color/colorPrimary"
@@ -192,7 +192,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.9"
                     android:gravity="center_horizontal|left"
                     android:padding="@dimen/activity_horizontal_margin"
                     app:backGroundColor="@color/colorPrimary"
@@ -240,7 +240,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.9"
                     android:gravity="center_horizontal|start"
                     android:padding="@dimen/activity_horizontal_margin"
                     app:backGroundColor="@color/colorPrimary"
@@ -289,7 +289,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.9"
                     android:padding="@dimen/activity_horizontal_margin"
                     app:backGroundColor="@color/colorPrimary"
                     app:textSize="14sp" />
@@ -337,7 +337,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.9"
                     android:padding="@dimen/activity_horizontal_margin"
                     app:backGroundColor="@color/colorPrimary"
                     app:textSize="14sp" />
@@ -384,7 +384,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.9"
                     android:padding="@dimen/activity_horizontal_margin"
                     app:backGroundColor="@color/colorPrimary"
                     app:textSize="14sp" />
@@ -428,7 +428,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.9"
                     android:padding="@dimen/activity_horizontal_margin"
                     app:backGroundColor="@color/colorPrimary"
                     app:textSize="14sp" />
@@ -473,7 +473,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.9"
                     android:padding="@dimen/activity_horizontal_margin"
                     app:backGroundColor="@color/colorPrimary"
                     app:textSize="18sp" />
@@ -517,7 +517,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.9"
                     android:padding="@dimen/activity_horizontal_margin"
                     app:backGroundColor="@color/colorPrimary"
                     app:textSize="18sp" />
@@ -561,7 +561,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.9"
                     android:padding="@dimen/activity_horizontal_margin"
                     app:backGroundColor="@color/colorPrimary"
                     app:textSize="18sp" />
@@ -596,7 +596,6 @@
                     android:padding="@dimen/activity_horizontal_margin"
                     android:text="Tuk Tuk "
                     android:textColor="@color/HeaderText"
-
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
@@ -605,7 +604,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.9"
                     android:padding="@dimen/activity_horizontal_margin"
                     app:backGroundColor="@color/colorPrimary"
                     app:textSize="18sp" />
