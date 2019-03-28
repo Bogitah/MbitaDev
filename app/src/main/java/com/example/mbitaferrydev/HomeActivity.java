@@ -1,11 +1,8 @@
 package com.example.mbitaferrydev;
 
-<<<<<<< HEAD
-import android.content.ClipData;
+
 import android.content.Intent;
-=======
 import android.os.Build;
->>>>>>> d6c5b13da2b37036c5b06f7b34f54b3ea4658ba4
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
