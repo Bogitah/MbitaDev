@@ -3,17 +3,14 @@ package com.example.mbitaferrydev;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -36,13 +33,14 @@ import com.example.mbitaferrydev.CustomAdapters.FerryRouteCardArrayAdapter;
 import com.example.mbitaferrydev.Database.DatabaseHelper;
 import com.example.mbitaferrydev.Database.TicketCount;
 import com.example.mbitaferrydev.Models.Routes;
-import com.orhanobut.simplelistview.SimpleListView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 
 public class HomeInitialActivity extends AppCompatActivity {
@@ -61,8 +59,6 @@ public class HomeInitialActivity extends AppCompatActivity {
     String seats;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +66,14 @@ public class HomeInitialActivity extends AppCompatActivity {
 //        mainListView = findViewById(R.id.ferryRoutesId);
 //        ferryList = new ArrayList<String>();
 //        mainListView.setHeaderView(R.layout.header);
+
+        progressDialog = new ProgressDialog(HomeInitialActivity.this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.setTitle("Login In");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
+//                        progressDialog.show(); // Display Progress Dialog
+        progressDialog.setCancelable(false);
+
 
         listView = (ListView) findViewById(R.id.card_listView);
 
@@ -82,8 +86,6 @@ public class HomeInitialActivity extends AppCompatActivity {
         loadFerryRoutes();
 
         db = new DatabaseHelper(this);
-
-
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -109,12 +111,7 @@ public class HomeInitialActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         login();
-                        progressDialog = new ProgressDialog(HomeInitialActivity.this);
-                        progressDialog.setMessage("Loading...");
-                        progressDialog.setTitle("Login In");
-                        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
-                        progressDialog.show(); // Display Progress Dialog
-                        progressDialog.setCancelable(false);
+
                         new Thread(new Runnable() {
                             public void run() {
                                 try {
@@ -156,6 +153,7 @@ public class HomeInitialActivity extends AppCompatActivity {
             return;
         } else {
 
+            progressDialog.show();
 
             RequestQueue reserverequestQueue = Volley.newRequestQueue(HomeInitialActivity.this);
             HashMap<String, String> params = new HashMap<String, String>();
@@ -174,8 +172,6 @@ public class HomeInitialActivity extends AppCompatActivity {
                                 String first_name = response.getString("first_name");
                                 String last_name = response.getString("last_name");
 
-
-                                dialog.dismiss();
 
 
                                 Log.d("log in ", first_name);
@@ -318,7 +314,6 @@ public class HomeInitialActivity extends AppCompatActivity {
     }
 
 
-
     private void loadTickets() {
 
 
@@ -339,10 +334,15 @@ public class HomeInitialActivity extends AppCompatActivity {
 
                         if (response.getInt("response_code") == 0) {
                             JSONArray jsonArray = response.getJSONArray("bus");
+                            JSONArray jsonArrayPrice=response.getJSONObject("bus").getJSONArray("price");
+
+
 
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject1 = jsonArray.getJSONObject(i);
                                 seats = jsonObject1.getString("total_seats");
+
+
 
 
                                 Log.d("Count", String.valueOf(seats));
@@ -352,7 +352,25 @@ public class HomeInitialActivity extends AppCompatActivity {
 
 
 
+
+
+
+
                             }
+
+
+                            Log.d("Price Data: ", jsonArrayPrice.toString(4));
+
+                            try {
+                                FileWriter file = new FileWriter( Environment.getExternalStorageState());
+                                file.write(String.valueOf(jsonArrayPrice));
+                                file.flush();
+                                file.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+
 
                             db.addCount(new TicketCount(seats));
 

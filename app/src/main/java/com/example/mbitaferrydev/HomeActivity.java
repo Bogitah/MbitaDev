@@ -20,10 +20,6 @@ import com.example.mbitaferrydev.Database.DatabaseHelper;
 import com.example.mbitaferrydev.Database.TicketCount;
 import com.nbbse.printapi.Printer;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -59,7 +55,7 @@ public class HomeActivity extends AppCompatActivity
         Log.d("Number of Tickets: ", String.valueOf(number_of_seates));
 
 
-        btnprocess=findViewById(R.id.btnprocess);
+        btnprocess = findViewById(R.id.btnprocess);
 
         btnprocess.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,36 +148,22 @@ public class HomeActivity extends AppCompatActivity
 
     private void printTicket() {
         String currentDateandTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-        if (Build.MODEL.equals("MobiPrint")) {
 
 
             Toast.makeText(getApplicationContext(), "Mobiwire Printing Ticket", Toast.LENGTH_LONG).show();
             Printer print = Printer.getInstance();
             print.printFormattedText();
-//                    print.printBitmap(getResources().openRawResource(R.raw.ena_coach_logo24bit));
             print.printText("-----------Mbita Ferry----------");
             print.printText("--------PO BOX 152-40202-------");
             print.printText("..........Mbita,KENYA..........");
             print.printText("......Passenger Details.........");
-//                    print.printText("Name: " + name);
-//                    print.printText("Ref No:" + json_obj.getString("merchant_transaction_id"));
-//                    print.printText("Phone No:" + phone);
-//                    print.printText("Seat:" +seat);
-//                    print.printText("Fare: Ksh." + json_obj.getString("fare"));
-//                    print.printText("................................");
-//                    print.printText("......Vehicle Details.........");
-//                    print.printText("Vehicle:" + json_obj.getString("bus"));
-//                    print.printText("Route:" + json_obj.getString("route"));
-//                    print.printText("Travel Date: " + json_obj.getString("travel_date"));
-//                    print.printText("................................");
-                    print.printText("Issued On :" + currentDateandTime);
-//                    print.printText("Issued by :" + app.getLogged_user());
-//                    print.printBitmap(getResources().openRawResource(R.raw.payment_methods_old));
-//                    print.printBitmap(getResources().openRawResource(R.raw.powered_by_mobiticket));
+
+            print.printText("Issued On :" + currentDateandTime);
+//
             print.printEndLine();
 
 
-        }
+
 
 
     }
