@@ -1,6 +1,11 @@
 package com.example.mbitaferrydev;
 
+<<<<<<< HEAD
+import android.content.ClipData;
+import android.content.Intent;
+=======
 import android.os.Build;
+>>>>>>> d6c5b13da2b37036c5b06f7b34f54b3ea4658ba4
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -131,13 +136,15 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.search_tickets_id) {
+            startActivity(new Intent(getApplicationContext(), SearchTicketActivity.class));
+
             // Handle the camera action
         } else if (id == R.id.manifest_id) {
-
+            startActivity(new Intent(getApplicationContext(), ManifestActivity.class));
+        } else if (id == R.id.payments_id) {
+            startActivity(new Intent(getApplicationContext(), PaymentsActivity.class));
         } else if (id == R.id.search_payments_id) {
-
-        } else if (id == R.id.change_password_id) {
-
+            startActivity(new Intent(getApplicationContext(), SearchPaymentsActivity.class));
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
