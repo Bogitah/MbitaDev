@@ -106,6 +106,7 @@
                     app:textSize="14sp" />
 
                 <CheckBox
+                    android:id="@+id/chkAdult"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
@@ -153,6 +154,8 @@
 
 
                 <CheckBox
+                    android:id="@+id/chkBigAnumal"
+
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
@@ -200,6 +203,8 @@
 
 
                 <CheckBox
+                    android:id="@+id/chkBigTruck"
+
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"

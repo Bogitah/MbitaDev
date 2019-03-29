@@ -33,6 +33,7 @@ import com.example.mbitaferrydev.CustomAdapters.FerryRouteCardArrayAdapter;
 import com.example.mbitaferrydev.Database.DatabaseHelper;
 import com.example.mbitaferrydev.Database.TicketCount;
 import com.example.mbitaferrydev.Models.Routes;
+import com.example.mbitaferrydev.customApplicationClass.CustomAppClass;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,6 +58,7 @@ public class HomeInitialActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     private DatabaseHelper db;
     String seats;
+    CustomAppClass app;
 
 
     @Override
@@ -66,6 +68,9 @@ public class HomeInitialActivity extends AppCompatActivity {
 //        mainListView = findViewById(R.id.ferryRoutesId);
 //        ferryList = new ArrayList<String>();
 //        mainListView.setHeaderView(R.layout.header);
+
+
+        app = (CustomAppClass) getApplication();
 
         progressDialog = new ProgressDialog(HomeInitialActivity.this);
         progressDialog.setMessage("Loading...");
@@ -100,7 +105,6 @@ public class HomeInitialActivity extends AppCompatActivity {
                 dialog = new Dialog(context);
                 dialog.setContentView(R.layout.login_dialog);
                 dialog.setTitle("      Account Login");
-                dialog.getWindow().setLayout(300, 350);
 
 
                 username = dialog.findViewById(R.id.editTextusername);
@@ -339,6 +343,10 @@ public class HomeInitialActivity extends AppCompatActivity {
                             JSONArray jsonArrayPrice=response.getJSONObject("bus").getJSONArray("price");
 
 
+                            String myString = response.getJSONObject("bus").getJSONObject("price").getString("name");
+
+
+
 
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject1 = jsonArray.getJSONObject(i);
@@ -361,7 +369,7 @@ public class HomeInitialActivity extends AppCompatActivity {
                             }
 
 
-                            Log.d("Price Data: ", jsonArrayPrice.toString(4));
+                            Log.d("Price Data: ", myString.toString());
 
                             try {
                                 FileWriter file = new FileWriter( Environment.getExternalStorageState());
