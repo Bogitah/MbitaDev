@@ -24,7 +24,5 @@
             android:textAlignment="center"
             android:textSize="20sp"
             android:text="Text line 1"/>
-
-
     </LinearLayout>
 </FrameLayout>

@@ -16,10 +16,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SearchPaymentsActivity"></activity>
-        <activity android:name=".PaymentsActivity" />
-        <activity android:name=".ManifestActivity" />
-        <activity android:name=".SearchTicketActivity" />
+        <activity android:name=".SearchPaymentsActivity"
+            android:label="@string/title_activity_search_payments"></activity>
+        <activity android:name=".PaymentsActivity"
+            android:label="@string/title_activity_payments"/>
+        <activity android:name=".ManifestActivity"
+            android:label="@string/title_activity_manifest"/>
+        <activity android:name=".SearchTicketActivity"
+            android:label="@string/title_activity_search_ticket"/>
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"

@@ -1,10 +1,15 @@
 <resources>
     <string name="app_name">Mbita Ferry Dev</string>
-    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_home">Mbita Ferry</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Clerk</string>
     <string name="nav_header_subtitle">Mbita Ferry Services</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+
+    <string name="title_activity_search_ticket">Search Ticket</string>
+    <string name="title_activity_search_payments">Search Payments</string>
+    <string name="title_activity_payments">Payments</string>
+    <string name="title_activity_manifest">Manifest</string>
 </resources>
