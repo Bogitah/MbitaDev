@@ -36,6 +36,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnupdate"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -255,14 +256,13 @@
 
 
                 <CheckBox
+                    android:id="@+id/chkChild"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:gravity="center"
-
                     android:layoutDirection="rtl"
-
                     android:padding="@dimen/activity_horizontal_margin" />
 
 
@@ -303,15 +303,15 @@
 
 
                 <CheckBox
+                    android:id="@+id/chkLuggage"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    android:gravity="center_vertical|right"
+                    android:gravity="center"
                     android:layoutDirection="rtl"
-
-
                     android:padding="@dimen/activity_horizontal_margin" />
+
 
 
             </LinearLayout>
@@ -326,7 +326,7 @@
 
 
                 <TextView
-                    android:id="@+id/text_view_moto_cycle"
+                    android:id="@+id/text_view_motor_cycle"
                     android:layout_width="150dp"
                     android:layout_height="match_parent"
                     android:layout_centerInParent="true"
@@ -334,13 +334,12 @@
                     android:padding="@dimen/activity_horizontal_margin"
                     android:text="Motor Cycle"
                     android:textColor="@color/HeaderText"
-
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
 
                 <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
-                    android:id="@+id/btnmoto_cycle"
+                    android:id="@+id/btnmotor_cycle"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true"
@@ -351,6 +350,7 @@
 
 
                 <CheckBox
+                    android:id="@+id/chkMotor_cycle"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
@@ -398,6 +398,7 @@
 
 
                 <CheckBox
+                    android:id="@+id/chkOther"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
@@ -442,6 +443,7 @@
 
 
                 <CheckBox
+                    android:id="@+id/chkSalooncar"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
@@ -476,17 +478,18 @@
                     android:textStyle="bold" />
 
                 <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
-                    android:id="@+id/btnSmallAnumal"
+                    android:id="@+id/btnSmallAnimal"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true"
                     android:layout_weight="1.9"
                     android:padding="@dimen/activity_horizontal_margin"
                     app:backGroundColor="@color/colorPrimary"
-                    app:textSize="18sp" />
+                    app:textSize="14sp" />
 
 
                 <CheckBox
+                    android:id="@+id/chkSmallAnimal"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
@@ -527,10 +530,11 @@
                     android:layout_weight="1.9"
                     android:padding="@dimen/activity_horizontal_margin"
                     app:backGroundColor="@color/colorPrimary"
-                    app:textSize="18sp" />
+                    app:textSize="14sp" />
 
 
                 <CheckBox
+                    android:id="@+id/chksmalltruck"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
@@ -571,10 +575,11 @@
                     android:layout_weight="1.9"
                     android:padding="@dimen/activity_horizontal_margin"
                     app:backGroundColor="@color/colorPrimary"
-                    app:textSize="18sp" />
+                    app:textSize="14sp" />
 
 
                 <CheckBox
+                    android:id="@+id/chkstaionwagon"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
@@ -614,10 +619,11 @@
                     android:layout_weight="1.9"
                     android:padding="@dimen/activity_horizontal_margin"
                     app:backGroundColor="@color/colorPrimary"
-                    app:textSize="18sp" />
+                    app:textSize="14sp" />
 
 
                 <CheckBox
+                    android:id="@+id/chktuktuk"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
