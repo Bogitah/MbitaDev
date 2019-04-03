@@ -3,14 +3,14 @@
     package="com.example.mbitaferrydev">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <uses-feature android:name="android.hardware.wifi" />
+
     <application
         android:name=".customApplicationClass.CustomAppClass"
-
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -18,19 +18,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SearchPaymentsActivity"
-            android:label="@string/title_activity_search_payments"></activity>
-        <activity android:name=".PaymentsActivity"
-            android:label="@string/title_activity_payments"/>
-        <activity android:name=".ManifestActivity"
-            android:label="@string/title_activity_manifest"/>
-        <activity android:name=".SearchTicketActivity"
-            android:label="@string/title_activity_search_ticket"/>
+        <activity android:name=".LocalDataActivity"></activity>
+        <activity
+            android:name=".SearchPaymentsActivity"
+            android:label="@string/title_activity_search_payments" />
+        <activity
+            android:name=".PaymentsActivity"
+            android:label="@string/title_activity_payments" />
+        <activity
+            android:name=".ManifestActivity"
+            android:label="@string/title_activity_manifest" />
+        <activity
+            android:name=".SearchTicketActivity"
+            android:label="@string/title_activity_search_ticket" />
 
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value=".MainActivity" />
-
 
         <activity
             android:name=".HomeActivity"
@@ -42,14 +46,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".MainActivity" />
         <activity android:name=".HomeInitialActivity">
-            <!--<intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
     </application>
 

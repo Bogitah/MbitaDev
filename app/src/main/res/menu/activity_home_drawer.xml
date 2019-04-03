@@ -21,6 +21,10 @@
             android:icon="@drawable/ic_search_payments"
             android:title="Search Payments" />
 
+        <item
+            android:id="@+id/viewlocaldata"
+            android:title="Viw Local" />
+
     </group>
 
 </menu>

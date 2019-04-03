@@ -9,13 +9,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.example.mbitaferrydev.Database.DatabaseHelper;
+import com.example.mbitaferrydev.Database.Ticket;
 import com.example.mbitaferrydev.Database.TicketCount;
+import com.example.mbitaferrydev.Database.TicketsSQLiteDatabaseHandler;
 import com.example.mbitaferrydev.Models.AdultsModel;
 import com.example.mbitaferrydev.Models.BigAnimalModel;
 import com.example.mbitaferrydev.Models.BigTruck;
@@ -35,6 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -78,6 +80,14 @@ public class HomeActivity extends AppCompatActivity
             txtother, txtsalooncar, txtsmallaminal, txtsmalltruck, txtstationwagon, txttuktuk;
 
 
+    private TicketsSQLiteDatabaseHandler ticketsdb;
+    Ticket  adultticket,bigAnimalTicket;
+
+    String date = new SimpleDateFormat("dd-MM-yyy", Locale.getDefault()).format(new Date());
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +96,8 @@ public class HomeActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         db = new DatabaseHelper(this);
+
+        ticketsdb = new TicketsSQLiteDatabaseHandler(this);
 
         adult = new AdultsModel("Adult", 0, 0);
         bigAnimalModel = new BigAnimalModel("Big Animal", 0, 0);
@@ -117,6 +129,8 @@ public class HomeActivity extends AppCompatActivity
 
 
 
+
+
         Log.d("Inserted: ", db.loadTickets());
         Toast.makeText(getApplicationContext(), "Tickets Available " + db.loadTickets(), Toast.LENGTH_SHORT).show();
 
@@ -145,6 +159,8 @@ public class HomeActivity extends AppCompatActivity
 
                 printTicket();
 
+
+
             }
         });
 
@@ -156,6 +172,12 @@ public class HomeActivity extends AppCompatActivity
                 if (((CheckBox) v).isChecked()) {
 
                     adult = new AdultsModel("Adult", adultnum, (adultnum * 150));
+                    int cost=(adultnum * 150);
+
+                    adultticket = new Ticket("Adult",adultnum,cost,date);
+
+
+
 
                 } else {
                     adult.setPrice(0);
@@ -178,6 +200,8 @@ public class HomeActivity extends AppCompatActivity
                 Log.d(TAG, String.format("oldValue: %d   newValue: %d", oldValue, newValue));
 
                 adultnum = newValue;
+
+
 
             }
         });
@@ -208,6 +232,10 @@ public class HomeActivity extends AppCompatActivity
                 if (((CheckBox) v).isChecked()) {
 
                     bigAnimalModel = new BigAnimalModel("Big Animal", biganimalnum, (biganimalnum * 300));
+
+
+                    bigAnimalTicket = new Ticket("Big Animal",biganimalnum,(biganimalnum * 300),date);
+
 
                 } else {
                     bigAnimalModel.setPrice(0);
@@ -745,10 +773,15 @@ public class HomeActivity extends AppCompatActivity
             // Handle the camera action
         } else if (id == R.id.manifest_id) {
             startActivity(new Intent(getApplicationContext(), ManifestActivity.class));
-        } else if (id == R.id.payments_id) {
+        } else if (id == R.id.payments_id)
+
+        {
             startActivity(new Intent(getApplicationContext(), PaymentsActivity.class));
         } else if (id == R.id.search_payments_id) {
             startActivity(new Intent(getApplicationContext(), SearchPaymentsActivity.class));
+        }
+        else if (id == R.id.viewlocaldata) {
+            startActivity(new Intent(getApplicationContext(), LocalDataActivity.class));
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -780,11 +813,15 @@ public class HomeActivity extends AppCompatActivity
 
         if (chkAdult.isChecked()) {
             print.printText(adult.getTitle() + "          " + adult.getNumber() + "       " + adult.getPrice());
+            ticketsdb.addTicket(adultticket);
+
 
         }
 
         if (chkBigAnumal.isChecked()) {
             print.printText(bigAnimalModel.getTitle() + "     " + bigAnimalModel.getNumber() + "       " + bigAnimalModel.getPrice());
+            ticketsdb.addTicket(bigAnimalTicket);
+
 
         }
 
