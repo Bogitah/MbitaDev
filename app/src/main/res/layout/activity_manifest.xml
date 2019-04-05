@@ -35,4 +35,8 @@
         android:text="set date"
         />
 
+    <ListView
+        android:id="@+id/list_manifest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

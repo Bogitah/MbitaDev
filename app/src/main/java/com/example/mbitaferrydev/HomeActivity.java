@@ -97,8 +97,6 @@ public class HomeActivity extends AppCompatActivity
 //    int[] ticketCounterlist = new int[]{};
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -166,53 +164,75 @@ public class HomeActivity extends AppCompatActivity
 
 
                 printTicket();
+
+
                 chkAdult.setChecked(false);
                 btnadult.setNumber(String.valueOf(0));
 
+                chkBigAnumal.setChecked(false);
+                btnBigAnumal.setNumber(String.valueOf(0));
 
+                chkBigTruck.setChecked(false);
+                btnBigTruck.setNumber(String.valueOf(0));
 
+                chkChild.setChecked(false);
+                btnchild.setNumber(String.valueOf(0));
 
+                chkLuggage.setChecked(false);
+                btnLuggage.setNumber(String.valueOf(0));
+
+                chkMotorCycle.setChecked(false);
+                btnMotorCycle.setNumber(String.valueOf(0));
+
+                chkOther.setChecked(false);
+                btnOther.setNumber(String.valueOf(0));
+
+                chkSaloonCar.setChecked(false);
+                btnSaloonCar.setNumber(String.valueOf(0));
+
+                chkSmallAnimal.setChecked(false);
+                btnSmallAnimal.setNumber(String.valueOf(0));
+
+                chkSmallTruck.setChecked(false);
+                btnSmallTruck.setNumber(String.valueOf(0));
+
+                chkStationWagon.setChecked(false);
+                btnStationWagon.setNumber(String.valueOf(0));
+
+                chkTuktuk.setChecked(false);
+                btnTuktuk.setNumber(String.valueOf(0));
 
             }
         });
 
 
         chkAdult = findViewById(R.id.chkAdult);
-        chkAdult.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (((CheckBox) v).isChecked()) {
+        chkAdult.setOnClickListener(v -> {
+            if (((CheckBox) v).isChecked()) {
 
-                    adult = new AdultsModel("Adult", adultnum, (adultnum * 150));
-                    int cost = (adultnum * 150);
+                adult = new AdultsModel("Adult", adultnum, (adultnum * 150));
+                int cost = (adultnum * 150);
 
-                    adultticket = new Ticket("Adult", adultnum, cost, date);
+                adultticket = new Ticket("Adult", adultnum, cost, date);
 
 
-                } else {
-                    adult.setPrice(0);
-                }
+            } else {
+                adult.setPrice(0);
             }
         });
 
 
         btnadult = findViewById(R.id.btnadult);
-        btnadult.setOnClickListener(new ElegantNumberButton.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String adultnum = btnadult.getNumber();
-            }
+        btnadult.setOnClickListener((ElegantNumberButton.OnClickListener) view -> {
+            String adultnum = btnadult.getNumber();
         });
 
-        btnadult.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
-            @Override
-            public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
-                Log.d(TAG, String.format("oldValue: %d   newValue: %d", oldValue, newValue));
+        btnadult.setOnValueChangeListener((view, oldValue, newValue) -> {
+            Log.d(TAG, String.format("oldValue: %d   newValue: %d", oldValue, newValue));
 
-                adultnum = newValue;
+            adultnum = newValue;
 
 
-            }
         });
 
         //trying unchecking
@@ -235,38 +255,28 @@ public class HomeActivity extends AppCompatActivity
 
         btnBigAnumal = findViewById(R.id.btnBigAnumal);
         chkBigAnumal = findViewById(R.id.chkBigAnumal);
-        chkBigAnumal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (((CheckBox) v).isChecked()) {
+        chkBigAnumal.setOnClickListener(v -> {
+            if (((CheckBox) v).isChecked()) {
 
-                    bigAnimalModel = new BigAnimalModel("Big Animal", biganimalnum, (biganimalnum * 300));
-
-                    bigAnimalTicket = new Ticket("Big Animal", biganimalnum, (biganimalnum * 300), date);
+                bigAnimalModel = new BigAnimalModel("Big Animal", biganimalnum, (biganimalnum * 300));
+                bigAnimalTicket = new Ticket("Big Animal", biganimalnum, (biganimalnum * 300), date);
 
 
-                } else {
-                    bigAnimalModel.setPrice(0);
-                }
+            } else {
+                bigAnimalModel.setPrice(0);
             }
         });
 
 
-        btnBigAnumal.setOnClickListener(new ElegantNumberButton.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        btnBigAnumal.setOnClickListener((ElegantNumberButton.OnClickListener) view -> {
 
-            }
         });
 
-        btnBigAnumal.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
-            @Override
-            public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
-                Log.d(TAG, String.format("oldValue: %d   newValue: %d", oldValue, newValue));
+        btnBigAnumal.setOnValueChangeListener((view, oldValue, newValue) -> {
+            Log.d(TAG, String.format("oldValue: %d   newValue: %d", oldValue, newValue));
 
-                biganimalnum = newValue;
+            biganimalnum = newValue;
 
-            }
         });
 
         chkBigAnumal.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -288,36 +298,26 @@ public class HomeActivity extends AppCompatActivity
         /// Big Truck------------------------------------------------------------
 
         chkBigTruck = findViewById(R.id.chkBigTruck);
-        chkBigTruck.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (((CheckBox) v).isChecked()) {
+        chkBigTruck.setOnClickListener(v -> {
+            if (((CheckBox) v).isChecked()) {
 
-                    bigTruck = new BigTruck("Big Truck", bigtrucknum, (bigtrucknum * 300));
-                    bigTruckTicket = new Ticket("Big Animal", bigtrucknum, (bigtrucknum * 300), date);
+                bigTruck = new BigTruck("Big Truck", bigtrucknum, (bigtrucknum * 300));
+                bigTruckTicket = new Ticket("Big Animal", bigtrucknum, (bigtrucknum * 300), date);
 
-
-                } else {
-                    bigTruck.setPrice(0);
-                }
+            } else {
+                bigTruck.setPrice(0);
             }
         });
 
-        btnBigTruck.setOnClickListener(new ElegantNumberButton.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        btnBigTruck.setOnClickListener((ElegantNumberButton.OnClickListener) view -> {
 
-            }
         });
 
-        btnBigTruck.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
-            @Override
-            public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
-                Log.d(TAG, String.format("oldValue: %d   newValue: %d", oldValue, newValue));
+        btnBigTruck.setOnValueChangeListener((view, oldValue, newValue) -> {
+            Log.d(TAG, String.format("oldValue: %d   newValue: %d", oldValue, newValue));
 
-                bigtrucknum = newValue;
+            bigtrucknum = newValue;
 
-            }
         });
         chkBigTruck.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
@@ -337,35 +337,26 @@ public class HomeActivity extends AppCompatActivity
 
 
         chkChild = findViewById(R.id.chkChild);
-        chkChild.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (((CheckBox) v).isChecked()) {
+        chkChild.setOnClickListener(v -> {
+            if (((CheckBox) v).isChecked()) {
 
-                    childModel = new ChildModel("Child", childnum, (childnum * 50));
-                    childTicket = new Ticket("Child", childnum, (childnum * 50), date);
+                childModel = new ChildModel("Child", childnum, (childnum * 50));
+                childTicket = new Ticket("Child", childnum, (childnum * 50), date);
 
-                } else {
-                    childModel.setPrice(0);
-                }
+            } else {
+                childModel.setPrice(0);
             }
         });
         btnchild = findViewById(R.id.btnchild);
-        btnchild.setOnClickListener(new ElegantNumberButton.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        btnchild.setOnClickListener((ElegantNumberButton.OnClickListener) view -> {
 
-            }
         });
 
-        btnchild.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
-            @Override
-            public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
-                Log.d(TAG, String.format("oldValue: %d   newValue: %d", oldValue, newValue));
+        btnchild.setOnValueChangeListener((view, oldValue, newValue) -> {
+            Log.d(TAG, String.format("oldValue: %d   newValue: %d", oldValue, newValue));
 
-                childnum = newValue;
+            childnum = newValue;
 
-            }
         });
         chkChild.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
@@ -386,36 +377,27 @@ public class HomeActivity extends AppCompatActivity
 ///Luggage ------------------------------------
 
         chkLuggage = findViewById(R.id.chkLuggage);
-        chkLuggage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (((CheckBox) v).isChecked()) {
+        chkLuggage.setOnClickListener(v -> {
+            if (((CheckBox) v).isChecked()) {
 
-                    luggage = new Luggage("Luggage", luggagenum, (luggagenum * 60));
-                    LuggageTicket = new Ticket("Luggage", luggagenum, (luggagenum * 60), date);
+                luggage = new Luggage("Luggage", luggagenum, (luggagenum * 60));
+                LuggageTicket = new Ticket("Luggage", luggagenum, (luggagenum * 60), date);
 
 
-                } else {
-                    luggage.setPrice(0);
-                }
+            } else {
+                luggage.setPrice(0);
             }
         });
         btnLuggage = findViewById(R.id.btnluggage);
-        btnLuggage.setOnClickListener(new ElegantNumberButton.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        btnLuggage.setOnClickListener((ElegantNumberButton.OnClickListener) view -> {
 
-            }
         });
 
-        btnLuggage.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
-            @Override
-            public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
-                Log.d(TAG, String.format("oldValue: %d   newValue: %d", oldValue, newValue));
+        btnLuggage.setOnValueChangeListener((view, oldValue, newValue) -> {
+            Log.d(TAG, String.format("oldValue: %d   newValue: %d", oldValue, newValue));
 
-                luggagenum = newValue;
+            luggagenum = newValue;
 
-            }
         });
         chkLuggage.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
@@ -432,36 +414,35 @@ public class HomeActivity extends AppCompatActivity
 
         ////MotorCycle---------------------
         chkMotorCycle = findViewById(R.id.chkMotor_cycle);
-        chkMotorCycle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (((CheckBox) v).isChecked()) {
+        chkMotorCycle.setOnClickListener(v -> {
+            if (((CheckBox) v).isChecked()) {
 
-                    motorCycle = new MotorCycle("Motor Cycle", motorCyclenum, (motorCyclenum * 250));
-                    motoCycleTicket = new Ticket("Motor Cycle", motorCyclenum, (motorCyclenum * 250), date);
+                motorCycle = new MotorCycle("Motor Cycle", motorCyclenum, (motorCyclenum * 250));
+                motoCycleTicket = new Ticket("Motor Cycle", motorCyclenum, (motorCyclenum * 250), date);
 
-                } else {
-                    motorCycle.setPrice(0);
-                }
+            } else {
+                motorCycle.setPrice(0);
             }
         });
-        btnMotorCycle = findViewById(R.id.btnmotor_cycle);
-        btnMotorCycle.setOnClickListener(new ElegantNumberButton.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        btnMotorCycle =
 
-            }
+                findViewById(R.id.btnmotor_cycle);
+        btnMotorCycle.setOnClickListener((ElegantNumberButton.OnClickListener) view ->
+
+        {
+
         });
 
-        btnMotorCycle.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
-            @Override
-            public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
-                Log.d(TAG, String.format("oldValue: %d   newValue: %d", oldValue, newValue));
-                motorCyclenum = newValue;
+        btnMotorCycle.setOnValueChangeListener((view, oldValue, newValue) ->
 
-            }
+        {
+            Log.d(TAG, String.format("oldValue: %d   newValue: %d", oldValue, newValue));
+            motorCyclenum = newValue;
+
         });
-        chkMotorCycle.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        chkMotorCycle.setOnCheckedChangeListener((buttonView, isChecked) ->
+
+        {
             if (isChecked) {
                 btnMotorCycle.setVisibility(View.GONE);
 
@@ -475,7 +456,9 @@ public class HomeActivity extends AppCompatActivity
         ///End MotorCycle--------------------
 
         ////Others---------------------
-        chkOther = findViewById(R.id.chkOther);
+        chkOther =
+
+                findViewById(R.id.chkOther);
         chkOther.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -490,7 +473,9 @@ public class HomeActivity extends AppCompatActivity
                 }
             }
         });
-        btnOther = findViewById(R.id.btnOther);
+        btnOther =
+
+                findViewById(R.id.btnOther);
         btnOther.setOnClickListener(new ElegantNumberButton.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -506,7 +491,9 @@ public class HomeActivity extends AppCompatActivity
 
             }
         });
-        chkOther.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        chkOther.setOnCheckedChangeListener((buttonView, isChecked) ->
+
+        {
             if (isChecked) {
                 btnOther.setVisibility(View.GONE);
 
@@ -521,7 +508,9 @@ public class HomeActivity extends AppCompatActivity
 
 
         ////SaloonCar---------------------
-        chkSaloonCar = findViewById(R.id.chkSalooncar);
+        chkSaloonCar =
+
+                findViewById(R.id.chkSalooncar);
         chkSaloonCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -535,7 +524,9 @@ public class HomeActivity extends AppCompatActivity
                 }
             }
         });
-        btnSaloonCar = findViewById(R.id.btnSalooncar);
+        btnSaloonCar =
+
+                findViewById(R.id.btnSalooncar);
         btnSaloonCar.setOnClickListener(new ElegantNumberButton.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -551,7 +542,9 @@ public class HomeActivity extends AppCompatActivity
 
             }
         });
-        chkSaloonCar.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        chkSaloonCar.setOnCheckedChangeListener((buttonView, isChecked) ->
+
+        {
             if (isChecked) {
                 btnSaloonCar.setVisibility(View.GONE);
 
@@ -567,7 +560,9 @@ public class HomeActivity extends AppCompatActivity
 
         ////Small Animal---------------------
 
-        chkSmallAnimal = findViewById(R.id.chkSmallAnimal);
+        chkSmallAnimal =
+
+                findViewById(R.id.chkSmallAnimal);
         chkSmallAnimal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -581,7 +576,9 @@ public class HomeActivity extends AppCompatActivity
                 }
             }
         });
-        btnSmallAnimal = findViewById(R.id.btnSmallAnimal);
+        btnSmallAnimal =
+
+                findViewById(R.id.btnSmallAnimal);
         btnSmallAnimal.setOnClickListener(new ElegantNumberButton.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -597,7 +594,9 @@ public class HomeActivity extends AppCompatActivity
 
             }
         });
-        chkSmallAnimal.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        chkSmallAnimal.setOnCheckedChangeListener((buttonView, isChecked) ->
+
+        {
             if (isChecked) {
                 btnSmallAnimal.setVisibility(View.GONE);
 
@@ -611,7 +610,9 @@ public class HomeActivity extends AppCompatActivity
         ///End Small Animal--------------------
 
         ////Small Truck---------------------
-        chkSmallTruck = findViewById(R.id.chksmalltruck);
+        chkSmallTruck =
+
+                findViewById(R.id.chksmalltruck);
         chkSmallTruck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -625,7 +626,9 @@ public class HomeActivity extends AppCompatActivity
                 }
             }
         });
-        btnSmallTruck = findViewById(R.id.btnsmalltruck);
+        btnSmallTruck =
+
+                findViewById(R.id.btnsmalltruck);
         btnSmallTruck.setOnClickListener(new ElegantNumberButton.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -641,7 +644,9 @@ public class HomeActivity extends AppCompatActivity
 
             }
         });
-        chkSmallTruck.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        chkSmallTruck.setOnCheckedChangeListener((buttonView, isChecked) ->
+
+        {
             if (isChecked) {
                 btnSmallTruck.setVisibility(View.GONE);
 
@@ -655,7 +660,9 @@ public class HomeActivity extends AppCompatActivity
         ///End Small Truck--------------------
 
         ////Station Wagon---------------------
-        chkStationWagon = findViewById(R.id.chkstaionwagon);
+        chkStationWagon =
+
+                findViewById(R.id.chkstaionwagon);
         chkStationWagon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -669,7 +676,9 @@ public class HomeActivity extends AppCompatActivity
                 }
             }
         });
-        btnStationWagon = findViewById(R.id.btnstaionwagon);
+        btnStationWagon =
+
+                findViewById(R.id.btnstaionwagon);
         btnStationWagon.setOnClickListener(new ElegantNumberButton.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -685,7 +694,9 @@ public class HomeActivity extends AppCompatActivity
 
             }
         });
-        chkStationWagon.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        chkStationWagon.setOnCheckedChangeListener((buttonView, isChecked) ->
+
+        {
             if (isChecked) {
                 btnStationWagon.setVisibility(View.GONE);
 
@@ -698,7 +709,9 @@ public class HomeActivity extends AppCompatActivity
         });
         ///End Station Wagon--------------------
         ////TukTuk---------------------
-        chkTuktuk = findViewById(R.id.chktuktuk);
+        chkTuktuk =
+
+                findViewById(R.id.chktuktuk);
         chkTuktuk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -713,7 +726,9 @@ public class HomeActivity extends AppCompatActivity
                 }
             }
         });
-        btnTuktuk = findViewById(R.id.btntuktuk);
+        btnTuktuk =
+
+                findViewById(R.id.btntuktuk);
         btnTuktuk.setOnClickListener(new ElegantNumberButton.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -729,7 +744,9 @@ public class HomeActivity extends AppCompatActivity
 
             }
         });
-        chkTuktuk.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        chkTuktuk.setOnCheckedChangeListener((buttonView, isChecked) ->
+
+        {
             if (isChecked) {
                 btnTuktuk.setVisibility(View.GONE);
 
