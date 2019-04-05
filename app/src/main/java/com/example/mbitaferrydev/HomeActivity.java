@@ -157,9 +157,7 @@ public class HomeActivity extends AppCompatActivity
             public void onClick(View v) {
 
 
-                printTicket();
-
-
+           printTicket();
 
             }
         });

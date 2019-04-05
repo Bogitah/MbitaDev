@@ -3,6 +3,7 @@ package com.example.mbitaferrydev;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class ManifestActivity extends AppCompatActivity {
     Button btnsetdate;
+
     DatePickerDialog datePickerDialog;
     int year;
     int month;
@@ -41,7 +43,6 @@ public class ManifestActivity extends AppCompatActivity {
                         (datePicker, year1, month1, day) -> btnsetdate.setText(day + "/" + month1 + "/" + year1), year, month, dayOfMonth);
                 datePickerDialog.show();
             }
-
         });
 
     }
