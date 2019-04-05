@@ -124,4 +124,187 @@ public class TicketsSQLiteDatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+
+
+    public int getProfilesCount() {
+        String countQuery = "SELECT  * FROM " + TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int cnt = cursor.getCount();
+        cursor.close();
+        return cnt;
+    }
+
+
+    public int getSumAdults(){
+
+        int sum=0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sumQuery=String.format("SELECT SUM(%s)  AS Total_Adults FROM %s WHERE %s ='Adult'",KEY_NUMBER,TABLE_NAME,KEY_TYPE);
+        Cursor cursor=db.rawQuery(sumQuery,null);
+        if(cursor.moveToFirst())
+            sum= cursor.getInt(cursor.getColumnIndex("Total_Adults"));
+        return sum;
+    }
+
+
+    public int getSumBigANimals(){
+
+        int sum=0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sumQuery=String.format("SELECT SUM(%s)  AS Total_Animals FROM %s WHERE %s ='Big Animal'",KEY_NUMBER,TABLE_NAME,KEY_TYPE);
+        Cursor cursor=db.rawQuery(sumQuery,null);
+        if(cursor.moveToFirst())
+            sum= cursor.getInt(cursor.getColumnIndex("Total_Animals"));
+        return sum;
+    }
+
+
+
+    public int getSumBigTrucks(){
+
+        int sum=0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sumQuery=String.format("SELECT SUM(%s)  AS Total_Big_Tracks FROM %s WHERE %s ='Big Truck'",KEY_NUMBER,TABLE_NAME,KEY_TYPE);
+        Cursor cursor=db.rawQuery(sumQuery,null);
+        if(cursor.moveToFirst())
+            sum= cursor.getInt(cursor.getColumnIndex("Total_Big_Tracks"));
+        return sum;
+    }
+
+
+    public int getSumChildren(){
+
+        int sum=0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sumQuery=String.format("SELECT SUM(%s)  AS Total_children FROM %s WHERE %s ='Child'",KEY_NUMBER,TABLE_NAME,KEY_TYPE);
+        Cursor cursor=db.rawQuery(sumQuery,null);
+        if(cursor.moveToFirst())
+            sum= cursor.getInt(cursor.getColumnIndex("Total_children"));
+        return sum;
+    }
+
+
+
+    public int getSumLuggage(){
+
+        int sum=0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sumQuery=String.format("SELECT SUM(%s)  AS Total_Luggage FROM %s WHERE %s ='Luggage'",KEY_NUMBER,TABLE_NAME,KEY_TYPE);
+        Cursor cursor=db.rawQuery(sumQuery,null);
+        if(cursor.moveToFirst())
+            sum= cursor.getInt(cursor.getColumnIndex("Total_Luggage"));
+        return sum;
+    }
+
+    public int getSumMotoCycles(){
+
+        int sum=0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sumQuery=String.format("SELECT SUM(%s)  AS Total_motobikes FROM %s WHERE %s ='Moto Cycle'",KEY_NUMBER,TABLE_NAME,KEY_TYPE);
+        Cursor cursor=db.rawQuery(sumQuery,null);
+        if(cursor.moveToFirst())
+            sum= cursor.getInt(cursor.getColumnIndex("Total_motobikes"));
+        return sum;
+    }
+
+    public int getSumOther(){
+
+        int sum=0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sumQuery=String.format("SELECT SUM(%s)  AS Total_other FROM %s WHERE %s ='Other'",KEY_NUMBER,TABLE_NAME,KEY_TYPE);
+        Cursor cursor=db.rawQuery(sumQuery,null);
+        if(cursor.moveToFirst())
+            sum= cursor.getInt(cursor.getColumnIndex("Total_other"));
+        return sum;
+    }
+
+
+
+
+    public int getSumSaloonCar(){
+
+        int sum=0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sumQuery=String.format("SELECT SUM(%s)  AS Total_Saloon FROM %s WHERE %s ='Saloon Car'",KEY_NUMBER,TABLE_NAME,KEY_TYPE);
+        Cursor cursor=db.rawQuery(sumQuery,null);
+        if(cursor.moveToFirst())
+            sum= cursor.getInt(cursor.getColumnIndex("Total_Saloon"));
+        return sum;
+    }
+
+
+
+    public int getSumSmallAnimal(){
+
+        int sum=0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sumQuery=String.format("SELECT SUM(%s)  AS Total_small_animal FROM %s WHERE %s ='Small Animal'",KEY_NUMBER,TABLE_NAME,KEY_TYPE);
+        Cursor cursor=db.rawQuery(sumQuery,null);
+        if(cursor.moveToFirst())
+            sum= cursor.getInt(cursor.getColumnIndex("Total_small_animal"));
+        return sum;
+    }
+
+
+
+    public int getSumSmallTruck(){
+
+        int sum=0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sumQuery=String.format("SELECT SUM(%s)  AS Total_Small_truck FROM %s WHERE %s ='Small Truck'",KEY_NUMBER,TABLE_NAME,KEY_TYPE);
+        Cursor cursor=db.rawQuery(sumQuery,null);
+        if(cursor.moveToFirst())
+            sum= cursor.getInt(cursor.getColumnIndex("Total_Small_truck"));
+        return sum;
+    }
+
+
+    public int getSumStationWagon(){
+
+        int sum=0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sumQuery=String.format("SELECT SUM(%s)  AS Total_Small_station_wagon FROM %s WHERE %s ='Station Wagon'",KEY_NUMBER,TABLE_NAME,KEY_TYPE);
+        Cursor cursor=db.rawQuery(sumQuery,null);
+        if(cursor.moveToFirst())
+            sum= cursor.getInt(cursor.getColumnIndex("Total_Small_station_wagon"));
+        return sum;
+    }
+
+    public int getSumTukTuk(){
+
+        int sum=0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sumQuery=String.format("SELECT SUM(%s)  AS Total_tuktuk FROM %s WHERE %s ='Tuk Tuk'",KEY_NUMBER,TABLE_NAME,KEY_TYPE);
+        Cursor cursor=db.rawQuery(sumQuery,null);
+        if(cursor.moveToFirst())
+            sum= cursor.getInt(cursor.getColumnIndex("Total_tuktuk"));
+        return sum;
+    }
+
+    public int getTotalCollection(){
+
+        int sum=0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sumQuery=String.format("SELECT SUM(%s) as Total FROM %s",KEY_COST,TABLE_NAME);
+        Cursor cursor=db.rawQuery(sumQuery,null);
+        if(cursor.moveToFirst())
+            sum= cursor.getInt(cursor.getColumnIndex("Total"));
+        return sum;
+    }
+
+
+    public int getTotalSeatsUsed(){
+
+        int sum=0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sumQuery=String.format("SELECT SUM(%s) as Total_seats FROM %s",KEY_NUMBER,TABLE_NAME);
+        Cursor cursor=db.rawQuery(sumQuery,null);
+        if(cursor.moveToFirst())
+            sum= cursor.getInt(cursor.getColumnIndex("Total_seats"));
+        return sum;
+    }
+
+
+
 }

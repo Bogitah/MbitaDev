@@ -81,9 +81,20 @@ public class HomeActivity extends AppCompatActivity
 
 
     private TicketsSQLiteDatabaseHandler ticketsdb;
-    Ticket  adultticket,bigAnimalTicket;
+    Ticket adultticket, bigAnimalTicket;
+    Ticket bigTruckTicket, childTicket;
+    Ticket LuggageTicket, motoCycleTicket;
+    Ticket otherTicket, saloonCarticket;
+    Ticket smallAnimalTicket, smallTruckTicket;
+    Ticket TukTukTicket, stationicket;
+
 
     String date = new SimpleDateFormat("dd-MM-yyy", Locale.getDefault()).format(new Date());
+
+
+//
+//    int ticketCounter=1;
+//    int[] ticketCounterlist = new int[]{};
 
 
 
@@ -114,21 +125,18 @@ public class HomeActivity extends AppCompatActivity
         bigAnimalModel = new BigAnimalModel("Big Animal", 0, 0);
 
 
-        txtadlt=findViewById(R.id.text_view);
-        txtbiganiamal=findViewById(R.id.text_view_big_animal);
-        txtbigtruck=findViewById(R.id.text_view_bg_truck);
-        txtchild= findViewById(R.id.text_viewchild);
-        txtluggage= findViewById(R.id.text_view_luggage);
-        txtmotorcycle= findViewById(R.id.text_view_motor_cycle);
-        txtother= findViewById(R.id.text_view_other);
-        txtsalooncar= findViewById(R.id.text_view_btnSalooncar);
-        txtsmallaminal= findViewById(R.id.txtsmallanimal);
-        txtsmalltruck= findViewById(R.id.text_view_small_truck);
-        txtstationwagon= findViewById(R.id.text_view_station_wagon);
-        txttuktuk= findViewById(R.id.text_view_tuktuk);
-
-
-
+        txtadlt = findViewById(R.id.text_view);
+        txtbiganiamal = findViewById(R.id.text_view_big_animal);
+        txtbigtruck = findViewById(R.id.text_view_bg_truck);
+        txtchild = findViewById(R.id.text_viewchild);
+        txtluggage = findViewById(R.id.text_view_luggage);
+        txtmotorcycle = findViewById(R.id.text_view_motor_cycle);
+        txtother = findViewById(R.id.text_view_other);
+        txtsalooncar = findViewById(R.id.text_view_btnSalooncar);
+        txtsmallaminal = findViewById(R.id.txtsmallanimal);
+        txtsmalltruck = findViewById(R.id.text_view_small_truck);
+        txtstationwagon = findViewById(R.id.text_view_station_wagon);
+        txttuktuk = findViewById(R.id.text_view_tuktuk);
 
 
         Log.d("Inserted: ", db.loadTickets());
@@ -147,7 +155,7 @@ public class HomeActivity extends AppCompatActivity
 
         }
 
-        Log.d("Number of Tickets: ", String.valueOf(number_of_seates));
+        Log.d("Number Items: ", String.valueOf(number_of_seates));
 
 
         btnprocess = findViewById(R.id.btnprocess);
@@ -158,6 +166,10 @@ public class HomeActivity extends AppCompatActivity
 
 
                 printTicket();
+                chkAdult.setChecked(false);
+                btnadult.setNumber(String.valueOf(0));
+
+
 
 
 
@@ -172,11 +184,9 @@ public class HomeActivity extends AppCompatActivity
                 if (((CheckBox) v).isChecked()) {
 
                     adult = new AdultsModel("Adult", adultnum, (adultnum * 150));
-                    int cost=(adultnum * 150);
+                    int cost = (adultnum * 150);
 
-                    adultticket = new Ticket("Adult",adultnum,cost,date);
-
-
+                    adultticket = new Ticket("Adult", adultnum, cost, date);
 
 
                 } else {
@@ -202,7 +212,6 @@ public class HomeActivity extends AppCompatActivity
                 adultnum = newValue;
 
 
-
             }
         });
 
@@ -212,7 +221,7 @@ public class HomeActivity extends AppCompatActivity
             if (isChecked) {
                 btnadult.setVisibility(View.GONE);
 
-                txtadlt.setText( adultnum+" Adult(s) selected");
+                txtadlt.setText(adultnum + " Adult(s) selected");
             } else {
                 btnadult.setVisibility(View.VISIBLE);
                 txtadlt.setText("Adult");
@@ -233,8 +242,7 @@ public class HomeActivity extends AppCompatActivity
 
                     bigAnimalModel = new BigAnimalModel("Big Animal", biganimalnum, (biganimalnum * 300));
 
-
-                    bigAnimalTicket = new Ticket("Big Animal",biganimalnum,(biganimalnum * 300),date);
+                    bigAnimalTicket = new Ticket("Big Animal", biganimalnum, (biganimalnum * 300), date);
 
 
                 } else {
@@ -265,14 +273,13 @@ public class HomeActivity extends AppCompatActivity
             if (isChecked) {
                 btnBigAnumal.setVisibility(View.GONE);
 
-                txtbiganiamal.setText( biganimalnum +"Animal(s) selected");
+                txtbiganiamal.setText(biganimalnum + "Animal(s) selected");
             } else {
                 btnBigAnumal.setVisibility(View.VISIBLE);
                 txtbiganiamal.setText("Big Animal");
 
             }
         });
-
 
 
         //End Big Animal *************************************************************************************************
@@ -287,6 +294,8 @@ public class HomeActivity extends AppCompatActivity
                 if (((CheckBox) v).isChecked()) {
 
                     bigTruck = new BigTruck("Big Truck", bigtrucknum, (bigtrucknum * 300));
+                    bigTruckTicket = new Ticket("Big Animal", bigtrucknum, (bigtrucknum * 300), date);
+
 
                 } else {
                     bigTruck.setPrice(0);
@@ -314,7 +323,7 @@ public class HomeActivity extends AppCompatActivity
             if (isChecked) {
                 btnBigTruck.setVisibility(View.GONE);
 
-                txtbigtruck.setText( bigtrucknum +" Truck(s) selected");
+                txtbigtruck.setText(bigtrucknum + " Truck(s) selected");
             } else {
                 btnBigTruck.setVisibility(View.VISIBLE);
                 txtbigtruck.setText("Big Truck");
@@ -334,6 +343,8 @@ public class HomeActivity extends AppCompatActivity
                 if (((CheckBox) v).isChecked()) {
 
                     childModel = new ChildModel("Child", childnum, (childnum * 50));
+                    childTicket = new Ticket("Child", childnum, (childnum * 50), date);
+
                 } else {
                     childModel.setPrice(0);
                 }
@@ -360,7 +371,7 @@ public class HomeActivity extends AppCompatActivity
             if (isChecked) {
                 btnchild.setVisibility(View.GONE);
 
-                txtchild.setText( childnum +" Child(ren) selected");
+                txtchild.setText(childnum + " Child(ren) selected");
             } else {
                 btnchild.setVisibility(View.VISIBLE);
                 txtchild.setText("Child");
@@ -381,6 +392,8 @@ public class HomeActivity extends AppCompatActivity
                 if (((CheckBox) v).isChecked()) {
 
                     luggage = new Luggage("Luggage", luggagenum, (luggagenum * 60));
+                    LuggageTicket = new Ticket("Luggage", luggagenum, (luggagenum * 60), date);
+
 
                 } else {
                     luggage.setPrice(0);
@@ -408,7 +421,7 @@ public class HomeActivity extends AppCompatActivity
             if (isChecked) {
                 btnLuggage.setVisibility(View.GONE);
 
-                txtluggage.setText( luggagenum +" Luggage selected");
+                txtluggage.setText(luggagenum + " Luggage selected");
             } else {
                 btnLuggage.setVisibility(View.VISIBLE);
                 txtluggage.setText("Luggage");
@@ -425,6 +438,8 @@ public class HomeActivity extends AppCompatActivity
                 if (((CheckBox) v).isChecked()) {
 
                     motorCycle = new MotorCycle("Motor Cycle", motorCyclenum, (motorCyclenum * 250));
+                    motoCycleTicket = new Ticket("Motor Cycle", motorCyclenum, (motorCyclenum * 250), date);
+
                 } else {
                     motorCycle.setPrice(0);
                 }
@@ -450,14 +465,14 @@ public class HomeActivity extends AppCompatActivity
             if (isChecked) {
                 btnMotorCycle.setVisibility(View.GONE);
 
-                txtmotorcycle.setText( motorCyclenum +" MotorCycle(s) selected");
+                txtmotorcycle.setText(motorCyclenum + " MotorCycle(s) selected");
             } else {
                 btnMotorCycle.setVisibility(View.VISIBLE);
                 txtmotorcycle.setText("Motor Cycle");
 
             }
         });
-                          ///End MotorCycle--------------------
+        ///End MotorCycle--------------------
 
         ////Others---------------------
         chkOther = findViewById(R.id.chkOther);
@@ -467,6 +482,9 @@ public class HomeActivity extends AppCompatActivity
                 if (((CheckBox) v).isChecked()) {
 
                     others = new Others("Other", othernum, 0);
+
+                    otherTicket = new Ticket("Other", othernum, (0), date);
+
                 } else {
                     others.setPrice(0);
                 }
@@ -492,16 +510,14 @@ public class HomeActivity extends AppCompatActivity
             if (isChecked) {
                 btnOther.setVisibility(View.GONE);
 
-                txtother.setText( othernum +" Other(s) selected");
+                txtother.setText(othernum + " Other(s) selected");
             } else {
                 btnOther.setVisibility(View.VISIBLE);
                 txtother.setText("Other");
 
             }
         });
-                                       ///End Other--------------------
-
-
+        ///End Other--------------------
 
 
         ////SaloonCar---------------------
@@ -512,6 +528,8 @@ public class HomeActivity extends AppCompatActivity
                 if (((CheckBox) v).isChecked()) {
 
                     saloonCar = new SaloonCar("Saloon Car", saloonCarnum, (saloonCarnum * 930));
+                    saloonCarticket = new Ticket("Saloon Car", saloonCarnum, (saloonCarnum * 930), date);
+
                 } else {
                     saloonCar.setPrice(0);
                 }
@@ -537,7 +555,7 @@ public class HomeActivity extends AppCompatActivity
             if (isChecked) {
                 btnSaloonCar.setVisibility(View.GONE);
 
-                txtsalooncar.setText( saloonCarnum +" Saloon car(s) selected");
+                txtsalooncar.setText(saloonCarnum + " Saloon car(s) selected");
             } else {
                 btnSaloonCar.setVisibility(View.VISIBLE);
                 txtsalooncar.setText("Saloon car");
@@ -556,6 +574,8 @@ public class HomeActivity extends AppCompatActivity
                 if (((CheckBox) v).isChecked()) {
 
                     smallAnimal = new SmallAnimal("Small Animal", smallAnimalnum, (smallAnimalnum * 200));
+                    smallAnimalTicket = new Ticket("Small Animal", smallAnimalnum, (smallAnimalnum * 200), date);
+
                 } else {
                     smallAnimal.setPrice(0);
                 }
@@ -581,14 +601,14 @@ public class HomeActivity extends AppCompatActivity
             if (isChecked) {
                 btnSmallAnimal.setVisibility(View.GONE);
 
-                txtsmallaminal.setText( smallAnimalnum +"Animal(s) selected");
+                txtsmallaminal.setText(smallAnimalnum + "Animal(s) selected");
             } else {
                 btnSmallAnimal.setVisibility(View.VISIBLE);
                 txtsmallaminal.setText("Small Animal");
 
             }
         });
-                                ///End Small Animal--------------------
+        ///End Small Animal--------------------
 
         ////Small Truck---------------------
         chkSmallTruck = findViewById(R.id.chksmalltruck);
@@ -598,6 +618,8 @@ public class HomeActivity extends AppCompatActivity
                 if (((CheckBox) v).isChecked()) {
 
                     smallTruck = new SmallTruck("Small Truck", smallTrucknum, (smallTrucknum * 1740));
+                    smallTruckTicket = new Ticket("Small Truck", smallTrucknum, (smallTrucknum * 1740), date);
+
                 } else {
                     smallTruck.setPrice(0);
                 }
@@ -623,14 +645,14 @@ public class HomeActivity extends AppCompatActivity
             if (isChecked) {
                 btnSmallTruck.setVisibility(View.GONE);
 
-                txtsmalltruck.setText( smallTrucknum +" Truck(s) selected");
+                txtsmalltruck.setText(smallTrucknum + " Truck(s) selected");
             } else {
                 btnSmallTruck.setVisibility(View.VISIBLE);
                 txtsmalltruck.setText("Small Truck");
 
             }
         });
-                                     ///End Small Truck--------------------
+        ///End Small Truck--------------------
 
         ////Station Wagon---------------------
         chkStationWagon = findViewById(R.id.chkstaionwagon);
@@ -639,7 +661,9 @@ public class HomeActivity extends AppCompatActivity
             public void onClick(View v) {
                 if (((CheckBox) v).isChecked()) {
 
-                    stationWagon = new StationWagon("Station wagon ", stationWagonnum, (stationWagonnum * 1160));
+                    stationWagon = new StationWagon("Station Wagon ", stationWagonnum, (stationWagonnum * 1160));
+                    stationicket = new Ticket("Station Wagon", stationWagonnum, (stationWagonnum * 1160), date);
+
                 } else {
                     stationWagon.setPrice(0);
                 }
@@ -665,14 +689,14 @@ public class HomeActivity extends AppCompatActivity
             if (isChecked) {
                 btnStationWagon.setVisibility(View.GONE);
 
-                txtstationwagon.setText( stationWagonnum +"Station wagon(s) selected");
+                txtstationwagon.setText(stationWagonnum + "Station wagon(s) selected");
             } else {
                 btnStationWagon.setVisibility(View.VISIBLE);
                 txtstationwagon.setText("Station Wagon");
 
             }
         });
-                                            ///End Station Wagon--------------------
+        ///End Station Wagon--------------------
         ////TukTuk---------------------
         chkTuktuk = findViewById(R.id.chktuktuk);
         chkTuktuk.setOnClickListener(new View.OnClickListener() {
@@ -681,6 +705,8 @@ public class HomeActivity extends AppCompatActivity
                 if (((CheckBox) v).isChecked()) {
 
                     tukTuk = new TukTuk("Tuk Tuk", tuktuknum, (tuktuknum * 500));
+                    TukTukTicket = new Ticket("Tuk Tuk", tuktuknum, (tuktuknum * 500), date);
+
 
                 } else {
                     tukTuk.setPrice(0);
@@ -707,14 +733,14 @@ public class HomeActivity extends AppCompatActivity
             if (isChecked) {
                 btnTuktuk.setVisibility(View.GONE);
 
-                txttuktuk.setText( tuktuknum +" Tuktuk(s) selected");
+                txttuktuk.setText(tuktuknum + " Tuktuk(s) selected");
             } else {
                 btnTuktuk.setVisibility(View.VISIBLE);
                 txttuktuk.setText("Tuk Tuk");
 
             }
         });
-                              ///End Tuk Tuk--------------------
+        ///End Tuk Tuk--------------------
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -773,14 +799,11 @@ public class HomeActivity extends AppCompatActivity
             // Handle the camera action
         } else if (id == R.id.manifest_id) {
             startActivity(new Intent(getApplicationContext(), ManifestActivity.class));
-        } else if (id == R.id.payments_id)
-
-        {
+        } else if (id == R.id.payments_id) {
             startActivity(new Intent(getApplicationContext(), PaymentsActivity.class));
         } else if (id == R.id.search_payments_id) {
             startActivity(new Intent(getApplicationContext(), SearchPaymentsActivity.class));
-        }
-        else if (id == R.id.viewlocaldata) {
+        } else if (id == R.id.viewlocaldata) {
             startActivity(new Intent(getApplicationContext(), LocalDataActivity.class));
         }
 
@@ -827,35 +850,55 @@ public class HomeActivity extends AppCompatActivity
 
         if (chkBigTruck.isChecked()) {
             print.printText(bigTruck.getTitle() + "      " + bigTruck.getNumber() + "       " + bigTruck.getPrice());
+            ticketsdb.addTicket(bigTruckTicket);
+
 
         }
         if (chkChild.isChecked()) {
             print.printText(childModel.getTitle() + "          " + childModel.getNumber() + "       " + childModel.getPrice());
+            ticketsdb.addTicket(childTicket);
+
 
         }
         if (chkLuggage.isChecked()) {
             print.printText(luggage.getTitle() + "        " + luggage.getNumber() + "       " + luggage.getPrice());
+            ticketsdb.addTicket(LuggageTicket);
+
         }
         if (chkMotorCycle.isChecked()) {
             print.printText(motorCycle.getTitle() + "    " + motorCycle.getNumber() + "       " + motorCycle.getPrice());
+            ticketsdb.addTicket(motoCycleTicket);
+
         }
         if (chkOther.isChecked()) {
             print.printText(others.getTitle() + "          " + others.getNumber() + "       " + others.getPrice());
+            ticketsdb.addTicket(otherTicket);
+
         }
         if (chkSaloonCar.isChecked()) {
             print.printText(saloonCar.getTitle() + "     " + saloonCar.getNumber() + "       " + saloonCar.getPrice());
+            ticketsdb.addTicket(saloonCarticket);
+
         }
         if (chkSmallAnimal.isChecked()) {
             print.printText(smallAnimal.getTitle() + "   " + smallAnimal.getNumber() + "       " + smallAnimal.getPrice());
+            ticketsdb.addTicket(smallAnimalTicket);
+
         }
         if (chkSmallTruck.isChecked()) {
             print.printText(smallTruck.getTitle() + "    " + smallTruck.getNumber() + "       " + smallTruck.getPrice());
+            ticketsdb.addTicket(smallTruckTicket);
+
         }
         if (chkStationWagon.isChecked()) {
             print.printText(stationWagon.getTitle() + " " + stationWagon.getNumber() + "       " + stationWagon.getPrice());
+            ticketsdb.addTicket(stationicket);
+
         }
         if (chkTuktuk.isChecked()) {
             print.printText(tukTuk.getTitle() + "        " + tukTuk.getNumber() + "       " + tukTuk.getPrice());
+            ticketsdb.addTicket(TukTukTicket);
+
         }
 
 
