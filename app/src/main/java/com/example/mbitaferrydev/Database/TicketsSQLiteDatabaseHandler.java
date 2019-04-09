@@ -5,7 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,15 +15,28 @@ public class TicketsSQLiteDatabaseHandler extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "TicketsDB";
+
+
     private static final String TABLE_NAME = "Tickets";
+    private static final String TABLE_REFRENCES = "Refs";
+
+
+
     private static final String KEY_ID = "id";
     private static final String KEY_TYPE = "type";
     private static final String KEY_NUMBER = "number";
     private static final String KEY_COST = "cost";
     private static final String KEY_DATE = "date";
+    private static final String KEY_REF = "ref";
+
+
+
+
+    private static final String KEY_REF_ID = "id";
+    private static final String KEY_REF_NAME = "ref_name";
 
     private static final String[] COLUMNS = {KEY_ID, KEY_TYPE, KEY_NUMBER,
-            KEY_COST, KEY_DATE};
+            KEY_COST, KEY_DATE,KEY_REF};
 
     public TicketsSQLiteDatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -30,9 +45,14 @@ public class TicketsSQLiteDatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        String CREATION_TABLE = "CREATE TABLE Tickets ( id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, number INTEGER, cost INTEGER ,date TEXT )";
+        String CREATION_TABLE = "CREATE TABLE Tickets ( id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, number INTEGER, cost INTEGER ,date TEXT,ref TEXT )";
+
+        String CREATION_REF_TABLE = "CREATE TABLE Refs ( id INTEGER PRIMARY KEY AUTOINCREMENT, ref_name TEXT)";
+
 
         db.execSQL(CREATION_TABLE);
+        db.execSQL(CREATION_REF_TABLE);
+
 
     }
 
@@ -42,6 +62,8 @@ public class TicketsSQLiteDatabaseHandler extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // you can implement here migration process
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_REFRENCES);
+
         this.onCreate(db);
     }
 
@@ -74,6 +96,7 @@ public class TicketsSQLiteDatabaseHandler extends SQLiteOpenHelper {
             ticket.setNumber(cursor.getInt(2));
             ticket.setCost(cursor.getInt(3));
             ticket.setDate(cursor.getString(4));
+            ticket.setRef_no(cursor.getString(5));
         }
 
         return ticket;
@@ -96,6 +119,8 @@ public class TicketsSQLiteDatabaseHandler extends SQLiteOpenHelper {
                     ticket.setNumber(cursor.getInt(2));
                     ticket.setCost(cursor.getInt(3));
                     ticket.setDate(cursor.getString(4));
+                    ticket.setRef_no(cursor.getString(5));
+
 
                     tickets.add(ticket);
                 } while (cursor.moveToNext());
@@ -118,6 +143,7 @@ public class TicketsSQLiteDatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_NUMBER, ticket.getNumber());
         values.put(KEY_COST, ticket.getCost());
         values.put(KEY_DATE, ticket.getDate());
+        values.put(KEY_REF,ticket.getRef_no());
 
         // insert
         db.insert(TABLE_NAME,null, values);
@@ -303,6 +329,81 @@ public class TicketsSQLiteDatabaseHandler extends SQLiteOpenHelper {
         if(cursor.moveToFirst())
             sum= cursor.getInt(cursor.getColumnIndex("Total_seats"));
         return sum;
+    }
+
+
+
+
+
+
+
+    public void  createRef(ReffNumber reffNumber) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_REF_ID, reffNumber.getId());
+        values.put(KEY_REF_NAME, reffNumber.getRef_name());
+
+
+        // insert row
+
+      db.insertWithOnConflict(TABLE_REFRENCES, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+
+
+        db.close();
+
+    }
+
+
+
+    /**
+     * getting all reffs
+     * */
+    public List<ReffNumber> getAllReffs() {
+        List<ReffNumber> tags = new ArrayList<ReffNumber>();
+        String selectQuery = "SELECT  * FROM " + TABLE_REFRENCES;
+
+        Log.e("Reffs:", selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                ReffNumber t = new ReffNumber();
+                t.setId(c.getInt((c.getColumnIndex(KEY_REF_ID))));
+                t.setRef_name(c.getString(c.getColumnIndex(KEY_REF_NAME)));
+
+                // adding to tags list
+                tags.add(t);
+            } while (c.moveToNext());
+        }
+        return tags;
+    }
+
+
+
+    public ReffNumber getRef(int id) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT  * FROM " + TABLE_REFRENCES + " WHERE "
+                + KEY_REF_ID + " = " + id;
+
+        Log.e("Query:", selectQuery);
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c != null)
+            c.moveToFirst();
+
+        ReffNumber td = new ReffNumber();
+        td.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+        td.setRef_name((c.getString(c.getColumnIndex(KEY_REF_NAME))));
+
+        return td;
+
     }
 
 

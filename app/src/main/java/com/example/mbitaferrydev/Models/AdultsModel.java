@@ -5,14 +5,25 @@ public class AdultsModel {
     int number;
     int price;
 
+    String ref_no;
+
     public AdultsModel() {
 
     }
 
-    public AdultsModel(String title, int number, int price) {
+    public AdultsModel(String title, int number, int price, String ref_no) {
         this.title = title;
         this.number = number;
         this.price = price;
+        this.ref_no = ref_no;
+    }
+
+    public String getRef_no() {
+        return ref_no;
+    }
+
+    public void setRef_no(String ref_no) {
+        this.ref_no = ref_no;
     }
 
     public String getTitle() {

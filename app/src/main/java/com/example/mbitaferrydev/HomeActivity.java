@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.example.mbitaferrydev.Database.DatabaseHelper;
+import com.example.mbitaferrydev.Database.ReffNumber;
 import com.example.mbitaferrydev.Database.Ticket;
 import com.example.mbitaferrydev.Database.TicketCount;
 import com.example.mbitaferrydev.Database.TicketsSQLiteDatabaseHandler;
@@ -96,6 +97,8 @@ public class HomeActivity extends AppCompatActivity
 //    int ticketCounter=1;
 //    int[] ticketCounterlist = new int[]{};
 
+    String ref_no;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +111,12 @@ public class HomeActivity extends AppCompatActivity
 
         ticketsdb = new TicketsSQLiteDatabaseHandler(this);
 
-        adult = new AdultsModel("Adult", 0, 0);
+
+
+
+
+
+        adult = new AdultsModel("Adult", 0, 0,ref_no);
         bigAnimalModel = new BigAnimalModel("Big Animal", 0, 0);
         childModel = new ChildModel("Child", 0, 0);
         luggage = new Luggage("Luggage", 0, 0);
@@ -137,6 +145,9 @@ public class HomeActivity extends AppCompatActivity
         txttuktuk = findViewById(R.id.text_view_tuktuk);
 
 
+
+
+
         Log.d("Inserted: ", db.loadTickets());
         Toast.makeText(getApplicationContext(), "Tickets Available " + db.loadTickets(), Toast.LENGTH_SHORT).show();
 
@@ -159,12 +170,22 @@ public class HomeActivity extends AppCompatActivity
         btnprocess = findViewById(R.id.btnprocess);
 
         btnprocess.setOnClickListener(new View.OnClickListener() {
+            int counter = 0;
+
+
             @Override
             public void onClick(View v) {
 
+                List<ReffNumber> allTags = ticketsdb.getAllReffs();
+                for (int i=1;i<allTags.size();i++){
+                }
+
+                ReffNumber tref = ticketsdb.getRef(counter);
+                Log.d("Ref Name", tref.getRef_name());
+                ref_no =tref.getRef_name();
+                counter ++;
 
                 printTicket();
-
 
                 chkAdult.setChecked(false);
                 btnadult.setNumber(String.valueOf(0));
@@ -210,10 +231,10 @@ public class HomeActivity extends AppCompatActivity
         chkAdult.setOnClickListener(v -> {
             if (((CheckBox) v).isChecked()) {
 
-                adult = new AdultsModel("Adult", adultnum, (adultnum * 150));
+                adult = new AdultsModel("Adult", adultnum, (adultnum * 150),ref_no);
                 int cost = (adultnum * 150);
 
-                adultticket = new Ticket("Adult", adultnum, cost, date);
+                adultticket = new Ticket("Adult", adultnum, cost, date,ref_no);
 
 
             } else {
@@ -259,7 +280,7 @@ public class HomeActivity extends AppCompatActivity
             if (((CheckBox) v).isChecked()) {
 
                 bigAnimalModel = new BigAnimalModel("Big Animal", biganimalnum, (biganimalnum * 300));
-                bigAnimalTicket = new Ticket("Big Animal", biganimalnum, (biganimalnum * 300), date);
+                bigAnimalTicket = new Ticket("Big Animal", biganimalnum, (biganimalnum * 300), date,ref_no);
 
 
             } else {
@@ -302,7 +323,7 @@ public class HomeActivity extends AppCompatActivity
             if (((CheckBox) v).isChecked()) {
 
                 bigTruck = new BigTruck("Big Truck", bigtrucknum, (bigtrucknum * 300));
-                bigTruckTicket = new Ticket("Big Animal", bigtrucknum, (bigtrucknum * 300), date);
+                bigTruckTicket = new Ticket("Big Animal", bigtrucknum, (bigtrucknum * 300), date,ref_no);
 
             } else {
                 bigTruck.setPrice(0);
@@ -341,7 +362,7 @@ public class HomeActivity extends AppCompatActivity
             if (((CheckBox) v).isChecked()) {
 
                 childModel = new ChildModel("Child", childnum, (childnum * 50));
-                childTicket = new Ticket("Child", childnum, (childnum * 50), date);
+                childTicket = new Ticket("Child", childnum, (childnum * 50), date,ref_no);
 
             } else {
                 childModel.setPrice(0);
@@ -381,7 +402,7 @@ public class HomeActivity extends AppCompatActivity
             if (((CheckBox) v).isChecked()) {
 
                 luggage = new Luggage("Luggage", luggagenum, (luggagenum * 60));
-                LuggageTicket = new Ticket("Luggage", luggagenum, (luggagenum * 60), date);
+                LuggageTicket = new Ticket("Luggage", luggagenum, (luggagenum * 60), date,ref_no);
 
 
             } else {
@@ -418,7 +439,7 @@ public class HomeActivity extends AppCompatActivity
             if (((CheckBox) v).isChecked()) {
 
                 motorCycle = new MotorCycle("Motor Cycle", motorCyclenum, (motorCyclenum * 250));
-                motoCycleTicket = new Ticket("Motor Cycle", motorCyclenum, (motorCyclenum * 250), date);
+                motoCycleTicket = new Ticket("Motor Cycle", motorCyclenum, (motorCyclenum * 250), date,ref_no);
 
             } else {
                 motorCycle.setPrice(0);
@@ -466,7 +487,7 @@ public class HomeActivity extends AppCompatActivity
 
                     others = new Others("Other", othernum, 0);
 
-                    otherTicket = new Ticket("Other", othernum, (0), date);
+                    otherTicket = new Ticket("Other", othernum, (0), date,ref_no);
 
                 } else {
                     others.setPrice(0);
@@ -517,7 +538,7 @@ public class HomeActivity extends AppCompatActivity
                 if (((CheckBox) v).isChecked()) {
 
                     saloonCar = new SaloonCar("Saloon Car", saloonCarnum, (saloonCarnum * 930));
-                    saloonCarticket = new Ticket("Saloon Car", saloonCarnum, (saloonCarnum * 930), date);
+                    saloonCarticket = new Ticket("Saloon Car", saloonCarnum, (saloonCarnum * 930), date,ref_no);
 
                 } else {
                     saloonCar.setPrice(0);
@@ -569,7 +590,7 @@ public class HomeActivity extends AppCompatActivity
                 if (((CheckBox) v).isChecked()) {
 
                     smallAnimal = new SmallAnimal("Small Animal", smallAnimalnum, (smallAnimalnum * 200));
-                    smallAnimalTicket = new Ticket("Small Animal", smallAnimalnum, (smallAnimalnum * 200), date);
+                    smallAnimalTicket = new Ticket("Small Animal", smallAnimalnum, (smallAnimalnum * 200), date,ref_no);
 
                 } else {
                     smallAnimal.setPrice(0);
@@ -619,7 +640,7 @@ public class HomeActivity extends AppCompatActivity
                 if (((CheckBox) v).isChecked()) {
 
                     smallTruck = new SmallTruck("Small Truck", smallTrucknum, (smallTrucknum * 1740));
-                    smallTruckTicket = new Ticket("Small Truck", smallTrucknum, (smallTrucknum * 1740), date);
+                    smallTruckTicket = new Ticket("Small Truck", smallTrucknum, (smallTrucknum * 1740), date,ref_no);
 
                 } else {
                     smallTruck.setPrice(0);
@@ -669,7 +690,7 @@ public class HomeActivity extends AppCompatActivity
                 if (((CheckBox) v).isChecked()) {
 
                     stationWagon = new StationWagon("Station Wagon ", stationWagonnum, (stationWagonnum * 1160));
-                    stationicket = new Ticket("Station Wagon", stationWagonnum, (stationWagonnum * 1160), date);
+                    stationicket = new Ticket("Station Wagon", stationWagonnum, (stationWagonnum * 1160), date,ref_no);
 
                 } else {
                     stationWagon.setPrice(0);
@@ -718,7 +739,7 @@ public class HomeActivity extends AppCompatActivity
                 if (((CheckBox) v).isChecked()) {
 
                     tukTuk = new TukTuk("Tuk Tuk", tuktuknum, (tuktuknum * 500));
-                    TukTukTicket = new Ticket("Tuk Tuk", tuktuknum, (tuktuknum * 500), date);
+                    TukTukTicket = new Ticket("Tuk Tuk", tuktuknum, (tuktuknum * 500), date,ref_no);
 
 
                 } else {
@@ -846,7 +867,9 @@ public class HomeActivity extends AppCompatActivity
         print.printText("..........Mbita,KENYA..........");
         print.printText(".......Passenger Details........");
 
-        print.printText("Total: " + total + " ksh\n");
+        print.printText("Total: " + total + " ksh");
+
+        print.printText("Ticket Ref: "+ref_no);
 
         print.printText("Item      Quantity    Cost\n");
 

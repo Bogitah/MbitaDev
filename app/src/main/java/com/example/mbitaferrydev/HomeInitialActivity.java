@@ -31,7 +31,9 @@ import com.android.volley.toolbox.Volley;
 import com.example.mbitaferrydev.BaseUrl.ApiUrls;
 import com.example.mbitaferrydev.CustomAdapters.FerryRouteCardArrayAdapter;
 import com.example.mbitaferrydev.Database.DatabaseHelper;
+import com.example.mbitaferrydev.Database.ReffNumber;
 import com.example.mbitaferrydev.Database.TicketCount;
+import com.example.mbitaferrydev.Database.TicketsSQLiteDatabaseHandler;
 import com.example.mbitaferrydev.Models.Routes;
 import com.example.mbitaferrydev.customApplicationClass.CustomAppClass;
 
@@ -59,6 +61,8 @@ public class HomeInitialActivity extends AppCompatActivity {
     private DatabaseHelper db;
     String seats;
     CustomAppClass app;
+    private TicketsSQLiteDatabaseHandler ticketsdb;
+
 
 
     @Override
@@ -68,6 +72,9 @@ public class HomeInitialActivity extends AppCompatActivity {
 //        mainListView = findViewById(R.id.ferryRoutesId);
 //        ferryList = new ArrayList<String>();
 //        mainListView.setHeaderView(R.layout.header);
+
+        ticketsdb = new TicketsSQLiteDatabaseHandler(this);
+
 
 
         app = (CustomAppClass) getApplication();
@@ -339,6 +346,9 @@ public class HomeInitialActivity extends AppCompatActivity {
                     try {
 
                         if (response.getInt("response_code") == 0) {
+
+                            loadReffNumbers();
+
                             JSONArray jsonArray = response.getJSONArray("bus");
                             JSONArray jsonArrayPrice=response.getJSONObject("bus").getJSONArray("price");
 
@@ -420,5 +430,80 @@ public class HomeInitialActivity extends AppCompatActivity {
 
 
     }
+
+    private void loadReffNumbers() {
+
+
+        RequestQueue requestQueue = Volley.newRequestQueue(HomeInitialActivity.this);
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("developer_username", "emuswailit");
+        params.put("developer_api_key", "c8e254c0adbe4b2623ff85567027d78d4cc066357627e284d4b4a01b159d97a7");
+        params.put("action", "batchgeneratereferencenumbers");
+        params.put("limit", "5");
+
+
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.PUT, ApiUrls.refGeneration, new JSONObject(params),
+                response -> {
+                    try {
+
+                        if (response.getInt("response_code") == 0) {
+                            JSONArray jsonArray = response.getJSONArray("reference_numbers");
+
+
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                                String refs = jsonObject1.getString("name");
+                                String id = jsonObject1.getString("id");
+
+                                Log.d("Refs", String.valueOf(refs));
+
+                                // Inserting Contacts
+                                ticketsdb.createRef(new ReffNumber(Integer.valueOf(id),refs));
+
+
+
+                            }
+
+
+
+
+
+
+                        } else {
+                            Toast.makeText(getApplicationContext(), response.getString("response_message"), Toast.LENGTH_SHORT).show();
+
+                        }
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }, error -> {
+            if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            } else if (error instanceof AuthFailureError) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            } else if (error instanceof ServerError) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            } else if (error instanceof NetworkError) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            } else if (error instanceof ParseError) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=utf-8";
+            }
+
+
+        };
+
+        requestQueue.add(req);
+
+
+    }
+
 
 }

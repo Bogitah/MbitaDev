@@ -7,20 +7,39 @@ public class Ticket {
     String ticket_type;
     int number, cost;
     String date;
+    String ref_no;
 
 
 
     public  Ticket() {}
 
 
-    public Ticket(String ticket_type, int number, int cost, String date) {
+    public Ticket(int id, String ticket_type, int number, int cost, String date, String ref_no) {
+        this.id = id;
         this.ticket_type = ticket_type;
         this.number = number;
         this.cost = cost;
         this.date = date;
+        this.ref_no = ref_no;
+    }
+
+    public Ticket(String ticket_type, int number, int cost, String date, String ref_no) {
+
+        this.ticket_type = ticket_type;
+        this.number = number;
+        this.cost = cost;
+        this.date = date;
+        this.ref_no = ref_no;
     }
 
 
+    public String getRef_no() {
+        return ref_no;
+    }
+
+    public void setRef_no(String ref_no) {
+        this.ref_no = ref_no;
+    }
 
     public int getId() {
         return id;

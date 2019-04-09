@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.mbitaferrydev.Database.ReffNumber;
 import com.example.mbitaferrydev.Database.Ticket;
 import com.example.mbitaferrydev.Database.TicketsSQLiteDatabaseHandler;
 
@@ -63,6 +64,7 @@ public class LocalDataActivity extends AppCompatActivity {
         int luggage = ticketsdb.getSumLuggage();
 
 
+
         Log.d("Adults:", String.valueOf(num_of_adults));
         Log.d("Big Animals:", String.valueOf(sum_big_animals));
         Log.d("Big Tracks:", String.valueOf(sum_big_tracks));
@@ -84,6 +86,19 @@ public class LocalDataActivity extends AppCompatActivity {
         Log.d("total seats_used:", String.valueOf(TotalSeatsUsed));
 
 
+        List<ReffNumber> allTags = ticketsdb.getAllReffs();
+        for (ReffNumber tag : allTags) {
+            Log.d("Refs Name", tag.getRef_name());
+        }
+
+
+
+
+
+
+
+
+
         LinearLayout linearLayoutRecords = (LinearLayout) findViewById(R.id.linearLayoutRecords);
         linearLayoutRecords.removeAllViews();
 
@@ -97,9 +112,10 @@ public class LocalDataActivity extends AppCompatActivity {
 
                 int cost = obj.getCost();
                 String date = obj.getDate();
+                String ref = obj.getRef_no();
 
 
-                String textViewContents = ticket_type + " - " + number + " - " + cost + " - " + date;
+                String textViewContents = ticket_type + ": " + number + " - " + cost + " Date: " + date +" Ref:" +ref;
 
                 TextView textViewStudentItem = new TextView(this);
                 textViewStudentItem.setPadding(8, 10, 8, 10);
