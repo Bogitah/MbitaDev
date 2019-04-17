@@ -195,6 +195,7 @@ public class HomeActivity extends AppCompatActivity
                     counter++;
 
                     printTicket();
+
                 } else {
 
                     Toast.makeText(HomeActivity.this, "Reference Numbers finished,Go Online to load", Toast.LENGTH_SHORT).show();
@@ -253,7 +254,6 @@ public class HomeActivity extends AppCompatActivity
 
                 adult = new AdultsModel("Adult", adultnum, (adultnum * 150), ref_no);
                 int cost = (adultnum * 150);
-
                 adultticket = new Ticket("Adult", adultnum, cost, date, ref_no);
 
 
@@ -852,8 +852,6 @@ public class HomeActivity extends AppCompatActivity
 
         if (id == R.id.search_tickets_id) {
             startActivity(new Intent(getApplicationContext(), SearchTicketActivity.class));
-
-            // Handle the camera action
         } else if (id == R.id.manifest_id) {
             startActivity(new Intent(getApplicationContext(), ManifestActivity.class));
         } else if (id == R.id.payments_id) {
@@ -895,79 +893,121 @@ public class HomeActivity extends AppCompatActivity
 
         if (chkAdult.isChecked()) {
             print.printText(adult.getTitle() + "          " + adult.getNumber() + "       " + adult.getPrice());
-            ticketsdb.addTicket(adultticket);
+            if (!checkConnectivity()) {
+                ticketsdb.addTicket(adultticket);
+
+
+            } else {
+
+
+            }
 
 
         }
 
         if (chkBigAnumal.isChecked()) {
             print.printText(bigAnimalModel.getTitle() + "     " + bigAnimalModel.getNumber() + "       " + bigAnimalModel.getPrice());
-            ticketsdb.addTicket(bigAnimalTicket);
 
+            if (!checkConnectivity()) {
+
+                ticketsdb.addTicket(bigAnimalTicket);
+
+            }
 
         }
 
         if (chkBigTruck.isChecked()) {
             print.printText(bigTruck.getTitle() + "      " + bigTruck.getNumber() + "       " + bigTruck.getPrice());
-            ticketsdb.addTicket(bigTruckTicket);
+            if (!checkConnectivity()) {
+
+                ticketsdb.addTicket(bigTruckTicket);
+            }
 
 
         }
         if (chkChild.isChecked()) {
             print.printText(childModel.getTitle() + "          " + childModel.getNumber() + "       " + childModel.getPrice());
-            ticketsdb.addTicket(childTicket);
+            if (!checkConnectivity()) {
 
+                ticketsdb.addTicket(childTicket);
+
+            }
 
         }
         if (chkLuggage.isChecked()) {
             print.printText(luggage.getTitle() + "        " + luggage.getNumber() + "       " + luggage.getPrice());
-            ticketsdb.addTicket(LuggageTicket);
+            if (!checkConnectivity()) {
+
+                ticketsdb.addTicket(LuggageTicket);
+            }
 
         }
         if (chkMotorCycle.isChecked()) {
             print.printText(motorCycle.getTitle() + "    " + motorCycle.getNumber() + "       " + motorCycle.getPrice());
-            ticketsdb.addTicket(motoCycleTicket);
+            if (!checkConnectivity()) {
+
+                ticketsdb.addTicket(motoCycleTicket);
+            }
 
         }
         if (chkOther.isChecked()) {
             print.printText(others.getTitle() + "          " + others.getNumber() + "       " + others.getPrice());
-            ticketsdb.addTicket(otherTicket);
+            if (!checkConnectivity()) {
+
+                ticketsdb.addTicket(otherTicket);
+            }
 
         }
         if (chkSaloonCar.isChecked()) {
             print.printText(saloonCar.getTitle() + "     " + saloonCar.getNumber() + "       " + saloonCar.getPrice());
-            ticketsdb.addTicket(saloonCarticket);
+
+            if (!checkConnectivity()) {
+                ticketsdb.addTicket(saloonCarticket);
+            }
+
 
         }
         if (chkSmallAnimal.isChecked()) {
             print.printText(smallAnimal.getTitle() + "   " + smallAnimal.getNumber() + "       " + smallAnimal.getPrice());
-            ticketsdb.addTicket(smallAnimalTicket);
+            if (!checkConnectivity()) {
+
+                ticketsdb.addTicket(smallAnimalTicket);
+            }
+
 
         }
         if (chkSmallTruck.isChecked()) {
             print.printText(smallTruck.getTitle() + "    " + smallTruck.getNumber() + "       " + smallTruck.getPrice());
-            ticketsdb.addTicket(smallTruckTicket);
+            if (!checkConnectivity()) {
+
+                ticketsdb.addTicket(smallTruckTicket);
+            }
+
 
         }
         if (chkStationWagon.isChecked()) {
             print.printText(stationWagon.getTitle() + " " + stationWagon.getNumber() + "       " + stationWagon.getPrice());
-            ticketsdb.addTicket(stationicket);
+            if (!checkConnectivity()) {
+
+                ticketsdb.addTicket(stationicket);
+            }
+
 
         }
         if (chkTuktuk.isChecked()) {
             print.printText(tukTuk.getTitle() + "        " + tukTuk.getNumber() + "       " + tukTuk.getPrice());
-            ticketsdb.addTicket(TukTukTicket);
+            if (!checkConnectivity()) {
+
+                ticketsdb.addTicket(TukTukTicket);
+            }
 
         }
 
 
         print.printText("Issued On :" + currentDateandTime);
-
         print.printBitmap(getResources().openRawResource(R.raw.payment_methods_old));
         print.printBitmap(getResources().openRawResource(R.raw.powered_by_mobiticket));
         print.printEndLine();
-//
-
 
     }
 
@@ -1016,7 +1056,7 @@ public class HomeActivity extends AppCompatActivity
 
                             pd.dismiss();
 
-                            Toast.makeText(getApplicationContext(), response.getString("response_message"), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), response.getString("response_message"), Toast.LENGTH_LONG).show();
 
 
                             for (int i = 0; i < message.length(); i++) {
@@ -1030,7 +1070,7 @@ public class HomeActivity extends AppCompatActivity
 
 
                         } else {
-                            Toast.makeText(getApplicationContext(), response.getString("response_message"), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), response.getString("response_message"), Toast.LENGTH_LONG).show();
                             pd.dismiss();
 
 
@@ -1085,7 +1125,7 @@ public class HomeActivity extends AppCompatActivity
         NetworkInfo info = connectivityManager.getActiveNetworkInfo();
 
         if ((info == null || !info.isConnected() || !info.isAvailable())) {
-            Toast.makeText(getApplicationContext(), "No Internet Available...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "No Internet Connection...", Toast.LENGTH_SHORT).show();
             return false;
         } else {
             return true;
