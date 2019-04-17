@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -41,28 +40,25 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 public class HomeInitialActivity extends AppCompatActivity {
 
-    final Context context = this;
-
-
     private static final String TAG = "CardListActivity";
-
-    private FerryRouteCardArrayAdapter cardArrayAdapter;
-    private ListView listView;
+    final Context context = this;
     EditText username, password;
     Dialog dialog;
     ProgressDialog progressDialog;
-    private DatabaseHelper db;
     String seats;
     CustomAppClass app;
+    private FerryRouteCardArrayAdapter cardArrayAdapter;
+    private ListView listView;
+    private DatabaseHelper db;
     private TicketsSQLiteDatabaseHandler ticketsdb;
-
 
 
     @Override
@@ -76,8 +72,10 @@ public class HomeInitialActivity extends AppCompatActivity {
         ticketsdb = new TicketsSQLiteDatabaseHandler(this);
 
 
-
         app = (CustomAppClass) getApplication();
+        app.setApi_key("c8e254c0adbe4b2623ff85567027d78d4cc066357627e284d4b4a01b159d97a7");
+        app.setUsername("emuswailit");
+        app.setHash_key("1FBEAD9B-D9CD-400D-ADF3-F4D0E639CEE0");
 
         progressDialog = new ProgressDialog(HomeInitialActivity.this);
         progressDialog.setMessage("Loading...");
@@ -105,9 +103,33 @@ public class HomeInitialActivity extends AppCompatActivity {
 
                 String selected = String.valueOf(listView.indexOfChild(view));
 
-//                String route = cardArrayAdapter.getItem(position).getName();
+                String Mbita = "Mbita";
+                String mfangano = "Mfangano";
 
-//                Toast.makeText(getApplicationContext(),selected, Toast.LENGTH_SHORT).show();
+                String luanda_kotiono = "Luanda Kotieno";
+
+
+
+                if (selected.equals("1")) {
+                    app.setTo(mfangano);
+                    app.setFrom(Mbita);
+                } else if (selected.equals("2")) {
+                    app.setTo(Mbita);
+                    app.setFrom(mfangano);
+
+                } else if (selected.equals("3")) {
+                    app.setTo(luanda_kotiono);
+                    app.setFrom(Mbita);
+
+                } else if (selected.equals("4")) {
+                    app.setTo(Mbita);
+                    app.setFrom(luanda_kotiono);
+
+                }
+
+
+                Toast.makeText(getApplicationContext(), app.getFrom()+"  "+app.getTo(), Toast.LENGTH_SHORT).show();
+
 
                 dialog = new Dialog(context);
                 dialog.setContentView(R.layout.login_dialog);
@@ -186,7 +208,6 @@ public class HomeInitialActivity extends AppCompatActivity {
                                 String last_name = response.getString("last_name");
 
 
-
                                 Log.d("log in ", first_name);
                                 progressDialog.dismiss();
 
@@ -208,7 +229,6 @@ public class HomeInitialActivity extends AppCompatActivity {
                 public void onErrorResponse(VolleyError error) {
                     if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                         Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-
 
                     } else if (error instanceof AuthFailureError) {
                         Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
@@ -262,6 +282,7 @@ public class HomeInitialActivity extends AppCompatActivity {
                             if (response.getInt("response_code") == 0) {
                                 JSONArray jsonArray = response.getJSONArray("bus");
                                 Log.i("Response:", jsonArray.toString());
+
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject jsonObject1 = jsonArray.getJSONObject(i);
                                     String ferry_route = jsonObject1.getString("route");
@@ -350,19 +371,15 @@ public class HomeInitialActivity extends AppCompatActivity {
                             loadReffNumbers();
 
                             JSONArray jsonArray = response.getJSONArray("bus");
-                            JSONArray jsonArrayPrice=response.getJSONObject("bus").getJSONArray("price");
+                            JSONArray jsonArrayPrice = response.getJSONObject("bus").getJSONArray("price");
 
 
                             String myString = response.getJSONObject("bus").getJSONObject("price").getString("name");
 
 
-
-
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject1 = jsonArray.getJSONObject(i);
                                 seats = jsonObject1.getString("total_seats");
-
-
 
 
                                 Log.d("Count", String.valueOf(seats));
@@ -371,25 +388,19 @@ public class HomeInitialActivity extends AppCompatActivity {
                                 Log.d("Insert: ", "Inserting ..");
 
 
-
-
-
-
-
                             }
 
 
                             Log.d("Price Data: ", myString.toString());
 
                             try {
-                                FileWriter file = new FileWriter( Environment.getExternalStorageState());
+                                FileWriter file = new FileWriter(Environment.getExternalStorageState());
                                 file.write(String.valueOf(jsonArrayPrice));
                                 file.flush();
                                 file.close();
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-
 
 
                             db.addCount(new TicketCount(seats));
@@ -458,15 +469,10 @@ public class HomeInitialActivity extends AppCompatActivity {
                                 Log.d("Refs", String.valueOf(refs));
 
                                 // Inserting Contacts
-                                ticketsdb.createRef(new ReffNumber(Integer.valueOf(id),refs));
-
+                                ticketsdb.createRef(new ReffNumber(Integer.valueOf(id), refs));
 
 
                             }
-
-
-
-
 
 
                         } else {

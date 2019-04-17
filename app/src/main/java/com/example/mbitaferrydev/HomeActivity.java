@@ -1,7 +1,11 @@
 package com.example.mbitaferrydev;
 
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -12,7 +16,19 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
+import com.example.mbitaferrydev.BaseUrl.ApiUrls;
 import com.example.mbitaferrydev.Database.DatabaseHelper;
 import com.example.mbitaferrydev.Database.ReffNumber;
 import com.example.mbitaferrydev.Database.Ticket;
@@ -30,12 +46,18 @@ import com.example.mbitaferrydev.Models.SmallAnimal;
 import com.example.mbitaferrydev.Models.SmallTruck;
 import com.example.mbitaferrydev.Models.StationWagon;
 import com.example.mbitaferrydev.Models.TukTuk;
+import com.example.mbitaferrydev.customApplicationClass.CustomAppClass;
 import com.google.android.material.navigation.NavigationView;
 import com.nbbse.printapi.Printer;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -52,18 +74,12 @@ public class HomeActivity extends AppCompatActivity
     private static final String TAG = "Number";
     ElegantNumberButton btnadult, btnBigAnumal, btnBigTruck, btnchild, btnLuggage, btnMotorCycle,
             btnOther, btnSaloonCar, btnSmallAnimal, btnSmallTruck, btnStationWagon, btnTuktuk;
-
-    private DatabaseHelper db;
-    private List<TicketCount> ticketsList = new ArrayList<>();
     int number_of_seates;
     Button btnprocess;
-
     CheckBox chkAdult, chkBigAnumal, chkBigTruck, chkChild, chkLuggage, chkMotorCycle,
             chkOther, chkSaloonCar, chkSmallAnimal, chkSmallTruck, chkStationWagon, chkTuktuk;
-
     int adultnum, biganimalnum, bigtrucknum, childnum, luggagenum, motorCyclenum,
             othernum, saloonCarnum, smallAnimalnum, smallTrucknum, stationWagonnum, tuktuknum;
-
     AdultsModel adult;
     BigAnimalModel bigAnimalModel;
     BigTruck bigTruck;
@@ -76,29 +92,23 @@ public class HomeActivity extends AppCompatActivity
     SmallTruck smallTruck;
     StationWagon stationWagon;
     TukTuk tukTuk;
-
     TextView txtadlt, txtbiganiamal, txtbigtruck, txtchild, txtluggage, txtmotorcycle,
             txtother, txtsalooncar, txtsmallaminal, txtsmalltruck, txtstationwagon, txttuktuk;
-
-
-    private TicketsSQLiteDatabaseHandler ticketsdb;
     Ticket adultticket, bigAnimalTicket;
     Ticket bigTruckTicket, childTicket;
     Ticket LuggageTicket, motoCycleTicket;
     Ticket otherTicket, saloonCarticket;
     Ticket smallAnimalTicket, smallTruckTicket;
     Ticket TukTukTicket, stationicket;
-
-
     String date = new SimpleDateFormat("dd-MM-yyy", Locale.getDefault()).format(new Date());
-
-
-//
+    String ref_no;
+    CustomAppClass app;
+    private DatabaseHelper db;
+    private List<TicketCount> ticketsList = new ArrayList<>();
+    //
 //    int ticketCounter=1;
 //    int[] ticketCounterlist = new int[]{};
-
-    String ref_no;
-
+    private TicketsSQLiteDatabaseHandler ticketsdb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,15 +118,13 @@ public class HomeActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         db = new DatabaseHelper(this);
+        app = (CustomAppClass) getApplication();
+
 
         ticketsdb = new TicketsSQLiteDatabaseHandler(this);
 
 
-
-
-
-
-        adult = new AdultsModel("Adult", 0, 0,ref_no);
+        adult = new AdultsModel("Adult", 0, 0, ref_no);
         bigAnimalModel = new BigAnimalModel("Big Animal", 0, 0);
         childModel = new ChildModel("Child", 0, 0);
         luggage = new Luggage("Luggage", 0, 0);
@@ -143,9 +151,6 @@ public class HomeActivity extends AppCompatActivity
         txtsmalltruck = findViewById(R.id.text_view_small_truck);
         txtstationwagon = findViewById(R.id.text_view_station_wagon);
         txttuktuk = findViewById(R.id.text_view_tuktuk);
-
-
-
 
 
         Log.d("Inserted: ", db.loadTickets());
@@ -177,15 +182,24 @@ public class HomeActivity extends AppCompatActivity
             public void onClick(View v) {
 
                 List<ReffNumber> allTags = ticketsdb.getAllReffs();
-                for (int i=1;i<allTags.size();i++){
+                ReffNumber tref = ticketsdb.getRef(counter);
+
+
+                for (int i = 1; i < allTags.size(); i++) {
+
                 }
 
-                ReffNumber tref = ticketsdb.getRef(counter);
-                Log.d("Ref Name", tref.getRef_name());
-                ref_no =tref.getRef_name();
-                counter ++;
+                if (counter <= allTags.size() && tref != null) {
 
-                printTicket();
+                    ref_no = tref.getRef_name();
+                    counter++;
+
+                    printTicket();
+                } else {
+
+                    Toast.makeText(HomeActivity.this, "Reference Numbers finished,Go Online to load", Toast.LENGTH_SHORT).show();
+                }
+
 
                 chkAdult.setChecked(false);
                 btnadult.setNumber(String.valueOf(0));
@@ -223,6 +237,12 @@ public class HomeActivity extends AppCompatActivity
                 chkTuktuk.setChecked(false);
                 btnTuktuk.setNumber(String.valueOf(0));
 
+
+                if (checkConnectivity()) {
+                    reserve();
+
+                }
+
             }
         });
 
@@ -231,10 +251,10 @@ public class HomeActivity extends AppCompatActivity
         chkAdult.setOnClickListener(v -> {
             if (((CheckBox) v).isChecked()) {
 
-                adult = new AdultsModel("Adult", adultnum, (adultnum * 150),ref_no);
+                adult = new AdultsModel("Adult", adultnum, (adultnum * 150), ref_no);
                 int cost = (adultnum * 150);
 
-                adultticket = new Ticket("Adult", adultnum, cost, date,ref_no);
+                adultticket = new Ticket("Adult", adultnum, cost, date, ref_no);
 
 
             } else {
@@ -256,7 +276,6 @@ public class HomeActivity extends AppCompatActivity
 
         });
 
-        //trying unchecking
 
         chkAdult.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
@@ -273,14 +292,13 @@ public class HomeActivity extends AppCompatActivity
 
         //Big Animal ************************************************************************************************************
 
-
         btnBigAnumal = findViewById(R.id.btnBigAnumal);
         chkBigAnumal = findViewById(R.id.chkBigAnumal);
         chkBigAnumal.setOnClickListener(v -> {
             if (((CheckBox) v).isChecked()) {
 
                 bigAnimalModel = new BigAnimalModel("Big Animal", biganimalnum, (biganimalnum * 300));
-                bigAnimalTicket = new Ticket("Big Animal", biganimalnum, (biganimalnum * 300), date,ref_no);
+                bigAnimalTicket = new Ticket("Big Animal", biganimalnum, (biganimalnum * 300), date, ref_no);
 
 
             } else {
@@ -323,7 +341,7 @@ public class HomeActivity extends AppCompatActivity
             if (((CheckBox) v).isChecked()) {
 
                 bigTruck = new BigTruck("Big Truck", bigtrucknum, (bigtrucknum * 300));
-                bigTruckTicket = new Ticket("Big Animal", bigtrucknum, (bigtrucknum * 300), date,ref_no);
+                bigTruckTicket = new Ticket("Big Animal", bigtrucknum, (bigtrucknum * 300), date, ref_no);
 
             } else {
                 bigTruck.setPrice(0);
@@ -362,7 +380,7 @@ public class HomeActivity extends AppCompatActivity
             if (((CheckBox) v).isChecked()) {
 
                 childModel = new ChildModel("Child", childnum, (childnum * 50));
-                childTicket = new Ticket("Child", childnum, (childnum * 50), date,ref_no);
+                childTicket = new Ticket("Child", childnum, (childnum * 50), date, ref_no);
 
             } else {
                 childModel.setPrice(0);
@@ -402,7 +420,7 @@ public class HomeActivity extends AppCompatActivity
             if (((CheckBox) v).isChecked()) {
 
                 luggage = new Luggage("Luggage", luggagenum, (luggagenum * 60));
-                LuggageTicket = new Ticket("Luggage", luggagenum, (luggagenum * 60), date,ref_no);
+                LuggageTicket = new Ticket("Luggage", luggagenum, (luggagenum * 60), date, ref_no);
 
 
             } else {
@@ -439,7 +457,7 @@ public class HomeActivity extends AppCompatActivity
             if (((CheckBox) v).isChecked()) {
 
                 motorCycle = new MotorCycle("Motor Cycle", motorCyclenum, (motorCyclenum * 250));
-                motoCycleTicket = new Ticket("Motor Cycle", motorCyclenum, (motorCyclenum * 250), date,ref_no);
+                motoCycleTicket = new Ticket("Motor Cycle", motorCyclenum, (motorCyclenum * 250), date, ref_no);
 
             } else {
                 motorCycle.setPrice(0);
@@ -487,7 +505,7 @@ public class HomeActivity extends AppCompatActivity
 
                     others = new Others("Other", othernum, 0);
 
-                    otherTicket = new Ticket("Other", othernum, (0), date,ref_no);
+                    otherTicket = new Ticket("Other", othernum, (0), date, ref_no);
 
                 } else {
                     others.setPrice(0);
@@ -538,7 +556,7 @@ public class HomeActivity extends AppCompatActivity
                 if (((CheckBox) v).isChecked()) {
 
                     saloonCar = new SaloonCar("Saloon Car", saloonCarnum, (saloonCarnum * 930));
-                    saloonCarticket = new Ticket("Saloon Car", saloonCarnum, (saloonCarnum * 930), date,ref_no);
+                    saloonCarticket = new Ticket("Saloon Car", saloonCarnum, (saloonCarnum * 930), date, ref_no);
 
                 } else {
                     saloonCar.setPrice(0);
@@ -590,7 +608,7 @@ public class HomeActivity extends AppCompatActivity
                 if (((CheckBox) v).isChecked()) {
 
                     smallAnimal = new SmallAnimal("Small Animal", smallAnimalnum, (smallAnimalnum * 200));
-                    smallAnimalTicket = new Ticket("Small Animal", smallAnimalnum, (smallAnimalnum * 200), date,ref_no);
+                    smallAnimalTicket = new Ticket("Small Animal", smallAnimalnum, (smallAnimalnum * 200), date, ref_no);
 
                 } else {
                     smallAnimal.setPrice(0);
@@ -640,7 +658,7 @@ public class HomeActivity extends AppCompatActivity
                 if (((CheckBox) v).isChecked()) {
 
                     smallTruck = new SmallTruck("Small Truck", smallTrucknum, (smallTrucknum * 1740));
-                    smallTruckTicket = new Ticket("Small Truck", smallTrucknum, (smallTrucknum * 1740), date,ref_no);
+                    smallTruckTicket = new Ticket("Small Truck", smallTrucknum, (smallTrucknum * 1740), date, ref_no);
 
                 } else {
                     smallTruck.setPrice(0);
@@ -690,7 +708,7 @@ public class HomeActivity extends AppCompatActivity
                 if (((CheckBox) v).isChecked()) {
 
                     stationWagon = new StationWagon("Station Wagon ", stationWagonnum, (stationWagonnum * 1160));
-                    stationicket = new Ticket("Station Wagon", stationWagonnum, (stationWagonnum * 1160), date,ref_no);
+                    stationicket = new Ticket("Station Wagon", stationWagonnum, (stationWagonnum * 1160), date, ref_no);
 
                 } else {
                     stationWagon.setPrice(0);
@@ -728,6 +746,7 @@ public class HomeActivity extends AppCompatActivity
 
             }
         });
+
         ///End Station Wagon--------------------
         ////TukTuk---------------------
         chkTuktuk =
@@ -739,7 +758,7 @@ public class HomeActivity extends AppCompatActivity
                 if (((CheckBox) v).isChecked()) {
 
                     tukTuk = new TukTuk("Tuk Tuk", tuktuknum, (tuktuknum * 500));
-                    TukTukTicket = new Ticket("Tuk Tuk", tuktuknum, (tuktuknum * 500), date,ref_no);
+                    TukTukTicket = new Ticket("Tuk Tuk", tuktuknum, (tuktuknum * 500), date, ref_no);
 
 
                 } else {
@@ -869,7 +888,7 @@ public class HomeActivity extends AppCompatActivity
 
         print.printText("Total: " + total + " ksh");
 
-        print.printText("Ticket Ref: "+ref_no);
+        print.printText("Ticket Ref: " + ref_no);
 
         print.printText("Item      Quantity    Cost\n");
 
@@ -949,6 +968,128 @@ public class HomeActivity extends AppCompatActivity
         print.printEndLine();
 //
 
+
+    }
+
+    private void reserve() {
+
+        ProgressDialog pd = new ProgressDialog(HomeActivity.this);
+        pd.setMessage("Reserving ...");
+        pd.show();
+
+
+        String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+
+        RequestQueue reserverequestQueue = Volley.newRequestQueue(HomeActivity.this);
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("username", app.getUsername());
+        params.put("api_key", app.getApi_key());
+        params.put("action", "ReserveSeats");
+        params.put("from_city", app.getFrom());
+        params.put("to_city", app.getTo());
+        params.put("travel_date", date);
+        params.put("hash", app.getHash_key());
+        params.put("selected_vehicle", "3");
+        params.put("seater", "491");
+        params.put("selected_ticket_type", "8");
+        params.put("payment_method", "1");
+        params.put("selected_seat", "100");
+        params.put("phone_number", "0702357053");
+        params.put("id_number", "31947982");
+        params.put("passenger_name", "Brian");
+        params.put("email_address", "brianoroni6@gmail.com");
+        params.put("insurance_charge", "");
+        params.put("served_by", "Oroni");
+        params.put("amount_charged", "10");
+        params.put("reference_number", ref_no);
+
+
+        JsonObjectRequest req = new JsonObjectRequest(ApiUrls.apiUrl, new JSONObject(params),
+                response -> {
+                    try {
+
+                        Log.d("Response: ", response.toString(4));
+
+
+                        if (response.getInt("response_code") == 0) {
+                            JSONArray message = response.getJSONArray("ticket_message");
+
+                            pd.dismiss();
+
+                            Toast.makeText(getApplicationContext(), response.getString("response_message"), Toast.LENGTH_SHORT).show();
+
+
+                            for (int i = 0; i < message.length(); i++) {
+                                JSONObject jsonObject1 = message.getJSONObject(i);
+                                String ticket_mesaage = jsonObject1.getString("name");
+
+
+                            }
+
+                            JSONArray jsonArray = response.getJSONArray("ticket");
+
+
+                        } else {
+                            Toast.makeText(getApplicationContext(), response.getString("response_message"), Toast.LENGTH_SHORT).show();
+                            pd.dismiss();
+
+
+                        }
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.d("Exception", e.toString());
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Log.e("Volley Error:", error.toString());
+
+
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+
+                } else if (error instanceof AuthFailureError) {
+                    Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                } else if (error instanceof NetworkError) {
+                    Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                } else if (error instanceof ParseError) {
+                    Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=utf-8";
+            }
+
+
+        };
+
+        reserverequestQueue.add(req);
+
+
+    }
+
+
+    private boolean checkConnectivity() {
+        boolean enabled = true;
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+
+        if ((info == null || !info.isConnected() || !info.isAvailable())) {
+            Toast.makeText(getApplicationContext(), "No Internet Available...", Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
+        }
 
     }
 

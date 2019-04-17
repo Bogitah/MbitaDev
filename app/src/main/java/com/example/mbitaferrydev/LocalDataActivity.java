@@ -12,6 +12,8 @@ import com.example.mbitaferrydev.Database.Ticket;
 import com.example.mbitaferrydev.Database.TicketsSQLiteDatabaseHandler;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -63,24 +65,25 @@ public class LocalDataActivity extends AppCompatActivity {
 
         int luggage = ticketsdb.getSumLuggage();
 
+        int summery = ticketsdb.getTicketSummery();
+
+
+
+
 
 
         Log.d("Adults:", String.valueOf(num_of_adults));
         Log.d("Big Animals:", String.valueOf(sum_big_animals));
         Log.d("Big Tracks:", String.valueOf(sum_big_tracks));
         Log.d("children:", String.valueOf(sum_children));
-
         Log.d("Luggage:", String.valueOf(luggage));
         Log.d("Motor Cycle:", String.valueOf(moto_bike));
         Log.d("Others:", String.valueOf(others));
         Log.d("Saloon Car:", String.valueOf(saloon_cars));
-
         Log.d("Small Animal:", String.valueOf(Small_animal));
         Log.d("Small Truck:", String.valueOf(small_truck));
         Log.d("Station Wagon:", String.valueOf(station_wagon));
         Log.d("Tuk Tuks:", String.valueOf(tuk_tuk));
-
-
         Log.d("total collection:", String.valueOf(totalcollection));
 
         Log.d("total seats_used:", String.valueOf(TotalSeatsUsed));
@@ -90,14 +93,6 @@ public class LocalDataActivity extends AppCompatActivity {
         for (ReffNumber tag : allTags) {
             Log.d("Refs Name", tag.getRef_name());
         }
-
-
-
-
-
-
-
-
 
         LinearLayout linearLayoutRecords = (LinearLayout) findViewById(R.id.linearLayoutRecords);
         linearLayoutRecords.removeAllViews();
