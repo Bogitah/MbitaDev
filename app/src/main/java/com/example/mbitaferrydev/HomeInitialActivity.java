@@ -34,7 +34,10 @@ import com.example.mbitaferrydev.Database.ReffNumber;
 import com.example.mbitaferrydev.Database.TicketCount;
 import com.example.mbitaferrydev.Database.TicketsSQLiteDatabaseHandler;
 import com.example.mbitaferrydev.Models.Routes;
+import com.example.mbitaferrydev.PostObject.Request_body;
+import com.example.mbitaferrydev.PostObject.Request_items;
 import com.example.mbitaferrydev.customApplicationClass.CustomAppClass;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -86,7 +89,7 @@ public class HomeInitialActivity extends AppCompatActivity {
         progressDialog.setCancelable(false);
 
 
-        listView = (ListView) findViewById(R.id.card_listView);
+        listView =  findViewById(R.id.card_listView);
 
         listView.addHeaderView(new View(this));
         listView.addFooterView(new View(this));
@@ -99,6 +102,8 @@ public class HomeInitialActivity extends AppCompatActivity {
         db = new DatabaseHelper(this);
 
 
+
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -108,7 +113,6 @@ public class HomeInitialActivity extends AppCompatActivity {
                 String mfangano = "Mfangano";
 
                 String luanda_kotiono = "Luanda Kotieno";
-
 
 
                 if (selected.equals("1")) {
@@ -129,7 +133,7 @@ public class HomeInitialActivity extends AppCompatActivity {
                 }
 
 
-                Toast.makeText(getApplicationContext(), app.getFrom()+"  "+app.getTo(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), app.getFrom() + "  " + app.getTo(), Toast.LENGTH_SHORT).show();
 
 
                 dialog = new Dialog(context);
@@ -190,7 +194,6 @@ public class HomeInitialActivity extends AppCompatActivity {
         } else {
 
             progressDialog.show();
-
             RequestQueue reserverequestQueue = Volley.newRequestQueue(HomeInitialActivity.this);
             HashMap<String, String> params = new HashMap<String, String>();
             params.put("username", "rWIv7GWzSp");
@@ -510,6 +513,7 @@ public class HomeInitialActivity extends AppCompatActivity {
 
 
     }
+
 
 
 }

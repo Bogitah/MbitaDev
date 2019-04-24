@@ -147,6 +147,16 @@ public class TicketsSQLiteDatabaseHandler extends SQLiteOpenHelper {
     }
 
 
+
+    public void deleteAll() {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(TABLE_NAME, null, null);
+
+    }
+
+
     public int getProfilesCount() {
         String countQuery = "SELECT  * FROM " + TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -417,6 +427,19 @@ public class TicketsSQLiteDatabaseHandler extends SQLiteOpenHelper {
         return td;
 
     }
+
+
+    public int getTotalOfAllRefLevels(){
+
+        int sum = 0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sumQuery = String.format("SELECT type,COUNT(%s) as Total_Refs FROM %s", KEY_REF, TABLE_NAME);
+        Cursor cursor = db.rawQuery(sumQuery, null);
+        if (cursor.moveToFirst())
+            sum = cursor.getInt(cursor.getColumnIndex("Total_Refs"));
+        return sum;
+    }
+
 
 
 }

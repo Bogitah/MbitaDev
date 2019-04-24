@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mbitaferrydev.Database.ReffNumber;
 import com.example.mbitaferrydev.Database.Ticket;
@@ -65,11 +66,7 @@ public class LocalDataActivity extends AppCompatActivity {
 
         int luggage = ticketsdb.getSumLuggage();
 
-        int summery = ticketsdb.getTicketSummery();
-
-
-
-
+        int summary_by_ref = ticketsdb.getTotalOfAllRefLevels();
 
 
         Log.d("Adults:", String.valueOf(num_of_adults));
@@ -88,13 +85,14 @@ public class LocalDataActivity extends AppCompatActivity {
 
         Log.d("total seats_used:", String.valueOf(TotalSeatsUsed));
 
+        Log.d("summary_by_ref:", String.valueOf(summary_by_ref));
 
         List<ReffNumber> allTags = ticketsdb.getAllReffs();
         for (ReffNumber tag : allTags) {
             Log.d("Refs Name", tag.getRef_name());
         }
 
-        LinearLayout linearLayoutRecords = (LinearLayout) findViewById(R.id.linearLayoutRecords);
+        LinearLayout linearLayoutRecords = findViewById(R.id.linearLayoutRecords);
         linearLayoutRecords.removeAllViews();
 
         if (tickets.size() > 0) {
@@ -129,5 +127,10 @@ public class LocalDataActivity extends AppCompatActivity {
             linearLayoutRecords.addView(locationItem);
         }
 
+
+
+
+
     }
+
 }
