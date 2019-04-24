@@ -66,6 +66,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import spencerstudios.com.fab_toast.FabToast;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -154,7 +155,7 @@ public class HomeActivity extends AppCompatActivity
 
 
         Log.d("Inserted: ", db.loadTickets());
-        Toast.makeText(getApplicationContext(), "Tickets Available " + db.loadTickets(), Toast.LENGTH_SHORT).show();
+        FabToast.makeText(getApplicationContext(), "Tickets Available " + db.loadTickets(),FabToast.LENGTH_SHORT,FabToast.INFORMATION,FabToast.POSITION_DEFAULT).show();
 
 
         btnBigTruck = findViewById(R.id.btnBigTruck);

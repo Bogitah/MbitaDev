@@ -45,6 +45,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import androidx.appcompat.app.AppCompatActivity;
+import spencerstudios.com.fab_toast.FabToast;
 
 public class HomeInitialActivity extends AppCompatActivity {
 
@@ -216,7 +217,7 @@ public class HomeInitialActivity extends AppCompatActivity {
 
 
                             } else {
-                                Toast.makeText(getApplicationContext(), response.getString("response_message"), Toast.LENGTH_SHORT).show();
+                                FabToast.makeText(getApplicationContext(), response.getString("response_message"), FabToast.LENGTH_SHORT,FabToast.WARNING,  FabToast.POSITION_DEFAULT).show();
 
                             }
 
@@ -304,7 +305,7 @@ public class HomeInitialActivity extends AppCompatActivity {
 
                             } else {
 
-                                Toast.makeText(getApplicationContext(), response.getString("response_message"), Toast.LENGTH_SHORT).show();
+                                FabToast.makeText(getApplicationContext(), response.getString("response_message"), FabToast.LENGTH_SHORT,FabToast.WARNING,FabToast.POSITION_DEFAULT).show();
 
                             }
 
@@ -361,7 +362,6 @@ public class HomeInitialActivity extends AppCompatActivity {
         params.put("travel_date", "27-10-2018");
         params.put("hash", "1FBEAD9B-D9CD-400D-ADF3-F4D0E639CEE0");
 
-
         JsonObjectRequest req = new JsonObjectRequest(ApiUrls.apiUrl, new JSONObject(params),
                 response -> {
                     try {
@@ -407,7 +407,7 @@ public class HomeInitialActivity extends AppCompatActivity {
 
 
                         } else {
-                            Toast.makeText(getApplicationContext(), response.getString("response_message"), Toast.LENGTH_SHORT).show();
+                            FabToast.makeText(getApplicationContext(), response.getString("response_message"), FabToast.LENGTH_SHORT).show();
 
                         }
 
