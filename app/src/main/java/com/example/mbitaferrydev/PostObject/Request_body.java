@@ -1,13 +1,23 @@
 package com.example.mbitaferrydev.PostObject;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class Request_body  {
-
+    @SerializedName("username")
     String username;
+    @SerializedName("api_key")
+
     String api_key;
+    @SerializedName("hash")
+
     String hash;
+    @SerializedName("action")
+
     String action;
+
+    @SerializedName("request_items")
 
     List<Request_items> request_items;
 

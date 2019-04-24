@@ -1,5 +1,7 @@
 package com.example.mbitaferrydev.PostObject;
 
+import androidx.annotation.NonNull;
+
 public class Request_items {
 
 
@@ -43,4 +45,6 @@ public class Request_items {
         this.amount_charged = amount_charged;
         this.reference_number = reference_number;
     }
+
+
 }

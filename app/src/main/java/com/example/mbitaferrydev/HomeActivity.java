@@ -1,12 +1,11 @@
 package com.example.mbitaferrydev;
 
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,6 +15,13 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -34,6 +40,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
+import com.droidnet.DroidListener;
+import com.droidnet.DroidNet;
 import com.example.mbitaferrydev.BaseUrl.ApiUrls;
 import com.example.mbitaferrydev.Database.DatabaseHelper;
 import com.example.mbitaferrydev.Database.ReffNumber;
@@ -54,13 +62,11 @@ import com.example.mbitaferrydev.Models.TukTuk;
 import com.example.mbitaferrydev.PostObject.Request_body;
 import com.example.mbitaferrydev.PostObject.Request_items;
 import com.example.mbitaferrydev.customApplicationClass.CustomAppClass;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
 import com.google.gson.reflect.TypeToken;
 import com.nbbse.printapi.Printer;
 
@@ -68,8 +74,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,14 +87,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, DroidListener {
 
 
     private static final String TAG = "Number";
@@ -124,6 +126,10 @@ public class HomeActivity extends AppCompatActivity
     List<Ticket> tickets;
     private DatabaseHelper db;
     private TicketsSQLiteDatabaseHandler ticketsdb;
+
+    private DroidNet mDroidNet;
+    Map<String, Object> map;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,6 +172,11 @@ public class HomeActivity extends AppCompatActivity
         txtsmalltruck = findViewById(R.id.text_view_small_truck);
         txtstationwagon = findViewById(R.id.text_view_station_wagon);
         txttuktuk = findViewById(R.id.text_view_tuktuk);
+
+        mDroidNet = DroidNet.getInstance();
+        mDroidNet.addInternetConnectivityListener(this);
+
+        map = new HashMap<String, Object>();
 
 
         Log.d("Inserted: ", db.loadTickets());
@@ -263,9 +274,9 @@ public class HomeActivity extends AppCompatActivity
 
 
                 if (checkConnectivity()) {
-                    reserve_update();
-
+                    reserve();
                 }
+
 
             }
         });
@@ -364,7 +375,8 @@ public class HomeActivity extends AppCompatActivity
             if (((CheckBox) v).isChecked()) {
 
                 bigTruck = new BigTruck("Big Truck", bigtrucknum, (bigtrucknum * 300));
-                bigTruckTicket = new Ticket("Big Animal", bigtrucknum,  300, date, ref_no);
+                bigTruckTicket = new Ticket("Big Animal", bigtrucknum, 300, date, ref_no);
+
 
             } else {
                 bigTruck.setPrice(0);
@@ -403,7 +415,8 @@ public class HomeActivity extends AppCompatActivity
             if (((CheckBox) v).isChecked()) {
 
                 childModel = new ChildModel("Child", childnum, (childnum * 50));
-                childTicket = new Ticket("Child", childnum,  50, date, ref_no);
+                childTicket = new Ticket("Child", childnum, 50, date, ref_no);
+
 
             } else {
                 childModel.setPrice(0);
@@ -443,7 +456,7 @@ public class HomeActivity extends AppCompatActivity
             if (((CheckBox) v).isChecked()) {
 
                 luggage = new Luggage("Luggage", luggagenum, (luggagenum * 60));
-                LuggageTicket = new Ticket("Luggage", luggagenum,   60, date, ref_no);
+                LuggageTicket = new Ticket("Luggage", luggagenum, 60, date, ref_no);
 
 
             } else {
@@ -480,7 +493,8 @@ public class HomeActivity extends AppCompatActivity
             if (((CheckBox) v).isChecked()) {
 
                 motorCycle = new MotorCycle("Motor Cycle", motorCyclenum, (motorCyclenum * 250));
-                motoCycleTicket = new Ticket("Motor Cycle", motorCyclenum,  250, date, ref_no);
+                motoCycleTicket = new Ticket("Motor Cycle", motorCyclenum, 250, date, ref_no);
+
 
             } else {
                 motorCycle.setPrice(0);
@@ -529,6 +543,7 @@ public class HomeActivity extends AppCompatActivity
                     others = new Others("Other", othernum, 0);
 
                     otherTicket = new Ticket("Other", othernum, (0), date, ref_no);
+
 
                 } else {
                     others.setPrice(0);
@@ -579,7 +594,8 @@ public class HomeActivity extends AppCompatActivity
                 if (((CheckBox) v).isChecked()) {
 
                     saloonCar = new SaloonCar("Saloon Car", saloonCarnum, (saloonCarnum * 930));
-                    saloonCarticket = new Ticket("Saloon Car", saloonCarnum,  930, date, ref_no);
+                    saloonCarticket = new Ticket("Saloon Car", saloonCarnum, 930, date, ref_no);
+
 
                 } else {
                     saloonCar.setPrice(0);
@@ -631,7 +647,8 @@ public class HomeActivity extends AppCompatActivity
                 if (((CheckBox) v).isChecked()) {
 
                     smallAnimal = new SmallAnimal("Small Animal", smallAnimalnum, (smallAnimalnum * 200));
-                    smallAnimalTicket = new Ticket("Small Animal", smallAnimalnum,  200, date, ref_no);
+                    smallAnimalTicket = new Ticket("Small Animal", smallAnimalnum, 200, date, ref_no);
+
 
                 } else {
                     smallAnimal.setPrice(0);
@@ -681,7 +698,8 @@ public class HomeActivity extends AppCompatActivity
                 if (((CheckBox) v).isChecked()) {
 
                     smallTruck = new SmallTruck("Small Truck", smallTrucknum, (smallTrucknum * 1740));
-                    smallTruckTicket = new Ticket("Small Truck", smallTrucknum,  1740, date, ref_no);
+                    smallTruckTicket = new Ticket("Small Truck", smallTrucknum, 1740, date, ref_no);
+
 
                 } else {
                     smallTruck.setPrice(0);
@@ -731,7 +749,8 @@ public class HomeActivity extends AppCompatActivity
                 if (((CheckBox) v).isChecked()) {
 
                     stationWagon = new StationWagon("Station Wagon ", stationWagonnum, (stationWagonnum * 1160));
-                    stationicket = new Ticket("Station Wagon", stationWagonnum,  1160, date, ref_no);
+                    stationicket = new Ticket("Station Wagon", stationWagonnum, 1160, date, ref_no);
+
 
                 } else {
                     stationWagon.setPrice(0);
@@ -781,7 +800,7 @@ public class HomeActivity extends AppCompatActivity
                 if (((CheckBox) v).isChecked()) {
 
                     tukTuk = new TukTuk("Tuk Tuk", tuktuknum, (tuktuknum * 500));
-                    TukTukTicket = new Ticket("Tuk Tuk", tuktuknum,  500, date, ref_no);
+                    TukTukTicket = new Ticket("Tuk Tuk", tuktuknum, 500, date, ref_no);
 
 
                 } else {
@@ -900,137 +919,145 @@ public class HomeActivity extends AppCompatActivity
                 + smallTruck.getPrice() + stationWagon.getPrice() + tukTuk.getPrice());
 
 
-        Toast.makeText(getApplicationContext(), "Mobiwire Printing Ticket", Toast.LENGTH_LONG).show();
-        Printer print = Printer.getInstance();
-        print.printFormattedText();
-        print.printText("------Mbita Ferry Services-----");
-        print.printText("..........Mbita,KENYA..........");
-        print.printText(".......Passenger Details........");
-
-        print.printText("Total: " + total + " ksh");
-
-        print.printText("Ticket Ref: " + ref_no);
-
-        print.printText("Item      Quantity    Cost\n");
+        if (Build.MODEL.equals("MobiPrint")) {
 
 
-        if (chkAdult.isChecked()) {
-            print.printText(adult.getTitle() + "          " + adult.getNumber() + "       " + adult.getPrice());
-            if (!checkConnectivity()) {
-                ticketsdb.addTicket(adultticket);
+            Toast.makeText(getApplicationContext(), "Mobiwire Printing Ticket", Toast.LENGTH_LONG).show();
+            Printer print = Printer.getInstance();
+            print.printFormattedText();
+            print.printText("------Mbita Ferry Services-----");
+            print.printText("..........Mbita,KENYA..........");
+            print.printText(".......Passenger Details........");
+
+            print.printText("Total: " + total + " ksh");
+
+            print.printText("Ticket Ref: " + ref_no);
+
+            print.printText("Item      Quantity    Cost\n");
 
 
-            } else {
+            if (chkAdult.isChecked()) {
+                print.printText(adult.getTitle() + "          " + adult.getNumber() + "       " + adult.getPrice());
+                if (!checkConnectivity()) {
+                    ticketsdb.addTicket(adultticket);
+
+
+                } else {
+
+
+                }
 
 
             }
 
+            if (chkBigAnumal.isChecked()) {
+                print.printText(bigAnimalModel.getTitle() + "     " + bigAnimalModel.getNumber() + "       " + bigAnimalModel.getPrice());
 
-        }
+                if (!checkConnectivity()) {
 
-        if (chkBigAnumal.isChecked()) {
-            print.printText(bigAnimalModel.getTitle() + "     " + bigAnimalModel.getNumber() + "       " + bigAnimalModel.getPrice());
+                    ticketsdb.addTicket(bigAnimalTicket);
 
-            if (!checkConnectivity()) {
-
-                ticketsdb.addTicket(bigAnimalTicket);
-
-            }
-
-        }
-
-        if (chkBigTruck.isChecked()) {
-            print.printText(bigTruck.getTitle() + "      " + bigTruck.getNumber() + "       " + bigTruck.getPrice());
-            if (!checkConnectivity()) {
-
-                ticketsdb.addTicket(bigTruckTicket);
-            }
-
-
-        }
-        if (chkChild.isChecked()) {
-            print.printText(childModel.getTitle() + "          " + childModel.getNumber() + "       " + childModel.getPrice());
-            if (!checkConnectivity()) {
-
-                ticketsdb.addTicket(childTicket);
+                }
 
             }
 
-        }
-        if (chkLuggage.isChecked()) {
-            print.printText(luggage.getTitle() + "        " + luggage.getNumber() + "       " + luggage.getPrice());
-            if (!checkConnectivity()) {
+            if (chkBigTruck.isChecked()) {
+                print.printText(bigTruck.getTitle() + "      " + bigTruck.getNumber() + "       " + bigTruck.getPrice());
+                if (!checkConnectivity()) {
 
-                ticketsdb.addTicket(LuggageTicket);
+                    ticketsdb.addTicket(bigTruckTicket);
+                }
+
+
+            }
+            if (chkChild.isChecked()) {
+                print.printText(childModel.getTitle() + "          " + childModel.getNumber() + "       " + childModel.getPrice());
+                if (!checkConnectivity()) {
+
+                    ticketsdb.addTicket(childTicket);
+
+                }
+
+            }
+            if (chkLuggage.isChecked()) {
+                print.printText(luggage.getTitle() + "        " + luggage.getNumber() + "       " + luggage.getPrice());
+                if (!checkConnectivity()) {
+
+                    ticketsdb.addTicket(LuggageTicket);
+                }
+
+            }
+            if (chkMotorCycle.isChecked()) {
+                print.printText(motorCycle.getTitle() + "    " + motorCycle.getNumber() + "       " + motorCycle.getPrice());
+                if (!checkConnectivity()) {
+
+                    ticketsdb.addTicket(motoCycleTicket);
+                }
+
+            }
+            if (chkOther.isChecked()) {
+                print.printText(others.getTitle() + "          " + others.getNumber() + "       " + others.getPrice());
+                if (!checkConnectivity()) {
+
+                    ticketsdb.addTicket(otherTicket);
+                }
+
+            }
+            if (chkSaloonCar.isChecked()) {
+                print.printText(saloonCar.getTitle() + "     " + saloonCar.getNumber() + "       " + saloonCar.getPrice());
+
+                if (!checkConnectivity()) {
+                    ticketsdb.addTicket(saloonCarticket);
+                }
+
+
+            }
+            if (chkSmallAnimal.isChecked()) {
+                print.printText(smallAnimal.getTitle() + "   " + smallAnimal.getNumber() + "       " + smallAnimal.getPrice());
+                if (!checkConnectivity()) {
+
+                    ticketsdb.addTicket(smallAnimalTicket);
+                }
+
+
+            }
+            if (chkSmallTruck.isChecked()) {
+                print.printText(smallTruck.getTitle() + "    " + smallTruck.getNumber() + "       " + smallTruck.getPrice());
+                if (!checkConnectivity()) {
+
+                    ticketsdb.addTicket(smallTruckTicket);
+                }
+
+
+            }
+            if (chkStationWagon.isChecked()) {
+                print.printText(stationWagon.getTitle() + " " + stationWagon.getNumber() + "       " + stationWagon.getPrice());
+                if (!checkConnectivity()) {
+
+                    ticketsdb.addTicket(stationicket);
+                }
+
+
+            }
+            if (chkTuktuk.isChecked()) {
+                print.printText(tukTuk.getTitle() + "        " + tukTuk.getNumber() + "       " + tukTuk.getPrice());
+                if (!checkConnectivity()) {
+
+                    ticketsdb.addTicket(TukTukTicket);
+                }
+
             }
 
+
+            print.printText("Issued On :" + currentDateandTime);
+            print.printBitmap(getResources().openRawResource(R.raw.payment_methods_old));
+            print.printBitmap(getResources().openRawResource(R.raw.powered_by_mobiticket));
+            print.printEndLine();
+
+        } else {
+
+            Toast.makeText(getApplicationContext(), "Printing Not Supported on this device", Toast.LENGTH_SHORT).show();
         }
-        if (chkMotorCycle.isChecked()) {
-            print.printText(motorCycle.getTitle() + "    " + motorCycle.getNumber() + "       " + motorCycle.getPrice());
-            if (!checkConnectivity()) {
-
-                ticketsdb.addTicket(motoCycleTicket);
-            }
-
-        }
-        if (chkOther.isChecked()) {
-            print.printText(others.getTitle() + "          " + others.getNumber() + "       " + others.getPrice());
-            if (!checkConnectivity()) {
-
-                ticketsdb.addTicket(otherTicket);
-            }
-
-        }
-        if (chkSaloonCar.isChecked()) {
-            print.printText(saloonCar.getTitle() + "     " + saloonCar.getNumber() + "       " + saloonCar.getPrice());
-
-            if (!checkConnectivity()) {
-                ticketsdb.addTicket(saloonCarticket);
-            }
-
-
-        }
-        if (chkSmallAnimal.isChecked()) {
-            print.printText(smallAnimal.getTitle() + "   " + smallAnimal.getNumber() + "       " + smallAnimal.getPrice());
-            if (!checkConnectivity()) {
-
-                ticketsdb.addTicket(smallAnimalTicket);
-            }
-
-
-        }
-        if (chkSmallTruck.isChecked()) {
-            print.printText(smallTruck.getTitle() + "    " + smallTruck.getNumber() + "       " + smallTruck.getPrice());
-            if (!checkConnectivity()) {
-
-                ticketsdb.addTicket(smallTruckTicket);
-            }
-
-
-        }
-        if (chkStationWagon.isChecked()) {
-            print.printText(stationWagon.getTitle() + " " + stationWagon.getNumber() + "       " + stationWagon.getPrice());
-            if (!checkConnectivity()) {
-
-                ticketsdb.addTicket(stationicket);
-            }
-
-
-        }
-        if (chkTuktuk.isChecked()) {
-            print.printText(tukTuk.getTitle() + "        " + tukTuk.getNumber() + "       " + tukTuk.getPrice());
-            if (!checkConnectivity()) {
-
-                ticketsdb.addTicket(TukTukTicket);
-            }
-
-        }
-
-
-        print.printText("Issued On :" + currentDateandTime);
-        print.printBitmap(getResources().openRawResource(R.raw.payment_methods_old));
-        print.printBitmap(getResources().openRawResource(R.raw.powered_by_mobiticket));
-        print.printEndLine();
 
     }
 
@@ -1042,32 +1069,92 @@ public class HomeActivity extends AppCompatActivity
 
 
         String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        int total_items = adultnum + biganimalnum + bigtrucknum + childnum + luggagenum +
+                motorCyclenum + othernum + saloonCarnum + smallAnimalnum + smallTrucknum + stationWagonnum + tuktuknum;
+        Log.d("Total Items", String.valueOf(total_items));
+
+
+        List<Request_items> request_items_1 = new ArrayList<>();
+
+        try {
+
+
+            for (int x = 0; x <= total_items; x++) {
+                request_items_1.add(new Request_items(
+
+                        app.getFrom(),
+                        app.getTo(),
+                        date,
+                        "1",
+                        "49",
+                        "6A",
+                        String.valueOf(x),
+                        "6",
+                        "0795890820",
+                        "30170003",
+                        "Oroni",
+                        "brianoroni6@gmail.com",
+                        "",
+                        "Test User",
+                        "10",
+                        ref_no
+                ));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String requestBody = gson.toJson(request_items_1);
+
+        requestBody = requestBody.replaceAll("\\s+", "");
+
+//
+//        Type collectionType = new TypeToken<List<Request_items>>() {
+//        }.getType();
+//        List<Request_items> details = gson.fromJson(requestBody, collectionType);
+//        Log.d("jsonObject", details.getClass().getSimpleName());
+//
+//
+//        Request_items[] obj = gson.fromJson(requestBody, Request_items[].class);
+//        Log.d("obj", Arrays.toString(obj));
+
+//        try {
+//
+//            ObjectMapper mapper = new ObjectMapper();
+//            map = mapper.readValue(requestBody, new TypeReference<Map<String, Object>>() {});
+//            Log.d("Map:",map.toString());
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+
+        JSONObject holder = new JSONObject();
+
+
+
+        try {
+
+
+            holder.put("username", "muswailit");
+            holder.put("api_key", "c8e254c0adbe4b2623ff85567027d78d4cc066357627e284d4b4a01b159d97a7");
+            holder.put("action", "BatchReserveSeats");
+            holder.put("hash", "1FBEAD9B-D9CD-400D-ADF3-F4D0E639CEE0");
+            holder.put("ticket_items", requestBody);
+
+            Log.d("Holder", holder.toString(4));
+
+
+        } catch (Exception e) {
+
+
+        }
 
         RequestQueue reserverequestQueue = Volley.newRequestQueue(HomeActivity.this);
-        HashMap<String, String> params = new HashMap<String, String>();
-        params.put("username", app.getUsername());
-        params.put("api_key", app.getApi_key());
-        params.put("action", "ReserveSeats");
-        params.put("from_city", app.getFrom());
-        params.put("to_city", app.getTo());
-        params.put("travel_date", date);
-        params.put("hash", app.getHash_key());
-        params.put("selected_vehicle", "3");
-        params.put("seater", "491");
-        params.put("selected_ticket_type", "8");
-        params.put("payment_method", "1");
-        params.put("selected_seat", "100");
-        params.put("phone_number", "0702357053");
-        params.put("id_number", "31947982");
-        params.put("passenger_name", "Brian");
-        params.put("email_address", "brianoroni6@gmail.com");
-        params.put("insurance_charge", "");
-        params.put("served_by", "Oroni");
-        params.put("amount_charged", "10");
-        params.put("reference_number", ref_no);
 
-
-        JsonObjectRequest req = new JsonObjectRequest(ApiUrls.apiUrl, new JSONObject(params),
+        JsonObjectRequest req = new JsonObjectRequest(ApiUrls.apiUrl, holder,
                 response -> {
                     try {
 
@@ -1133,6 +1220,17 @@ public class HomeActivity extends AppCompatActivity
             }
 
 
+            /**
+             * Passing some request headers
+             * */
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
+            }
+
+
         };
 
         reserverequestQueue.add(req);
@@ -1155,7 +1253,7 @@ public class HomeActivity extends AppCompatActivity
                 int number = obj.getNumber();
 
                 int cost = obj.getCost();
-                String amount= String.valueOf(cost);
+                String amount = String.valueOf(cost);
                 String date = obj.getDate();
                 String ref = obj.getRef_no();
 
@@ -1165,15 +1263,15 @@ public class HomeActivity extends AppCompatActivity
 
                 request_items.add(new Request_items(
 
-                        "5",
-                        "3",
+                        app.getFrom(),
+                        app.getTo(),
                         date,
                         "1",
                         "49",
                         "6A",
                         "1",
                         "6",
-                        "0705680609",
+                        "0795890820",
                         "30170003",
                         ticket_type,
                         "brianoroni6@gmail.com",
@@ -1199,23 +1297,21 @@ public class HomeActivity extends AppCompatActivity
                 "BatchReserveSeats", request_items);
 
 
-
-
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         final String requestBody = gson.toJson(request_body);
+
+        Log.d("Body:", requestBody);
 
 
         RequestQueue requestQueue = Volley.newRequestQueue(HomeActivity.this);
 
-        String url = "http://httpbin.org/post";
 
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiUrls.apiUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d("Response", response);
 
-                ticketsdb.deleteAll();
+//                ticketsdb.deleteAll();
 
                 Toast.makeText(getApplicationContext(), "All Tickets Synced", Toast.LENGTH_SHORT).show();
             }
@@ -1230,14 +1326,10 @@ public class HomeActivity extends AppCompatActivity
                 return "application/json; charset=utf-8";
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public byte[] getBody() throws AuthFailureError {
-                try {
-                    return requestBody == null ? null : requestBody.getBytes("utf-8");
-                } catch (UnsupportedEncodingException uee) {
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-                    return null;
-                }
+                return requestBody == null ? null : requestBody.getBytes(StandardCharsets.UTF_8);
             }
 
             @Override
@@ -1246,10 +1338,9 @@ public class HomeActivity extends AppCompatActivity
                 if (response != null) {
                     responseString = String.valueOf(response.statusCode);
 
-                    Log.d("Time",String.valueOf(response.networkTimeMs));
-                    Log.d("Headers",String.valueOf(response.headers));
-                    Log.d("Raw Data",new String(response.data));
-
+                    Log.d("Time", String.valueOf(response.networkTimeMs));
+                    Log.d("Headers", String.valueOf(response.headers));
+                    Log.d("Raw Data", new String(response.data));
 
 
                     // can get more details such as response.headers
@@ -1277,6 +1368,29 @@ public class HomeActivity extends AppCompatActivity
 
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mDroidNet.removeInternetConnectivityChangeListener(this);
+    }
+
+
+    @Override
+    public void onInternetConnectivityChanged(boolean isConnected) {
+
+
+        if (isConnected) {
+            //do Stuff with internet
+
+            Toast.makeText(getApplicationContext(), "Tickets Syncing..", Toast.LENGTH_SHORT).show();
+
+//            reserve_update();
+        } else {
+            //no internet
+        }
+
+    }
 
 
 }
