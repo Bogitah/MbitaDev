@@ -34,10 +34,7 @@ import com.example.mbitaferrydev.Database.ReffNumber;
 import com.example.mbitaferrydev.Database.TicketCount;
 import com.example.mbitaferrydev.Database.TicketsSQLiteDatabaseHandler;
 import com.example.mbitaferrydev.Models.Routes;
-import com.example.mbitaferrydev.PostObject.Request_body;
-import com.example.mbitaferrydev.PostObject.Request_items;
 import com.example.mbitaferrydev.customApplicationClass.CustomAppClass;
-import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -263,9 +260,7 @@ public class HomeInitialActivity extends AppCompatActivity {
         }
     }
 
-
     private void loadFerryRoutes() {
-
 
         RequestQueue ferryrequests = Volley.newRequestQueue(HomeInitialActivity.this);
 

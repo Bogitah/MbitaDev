@@ -2,6 +2,8 @@ package com.example.mbitaferrydev.customApplicationClass;
 
 import android.app.Application;
 
+import com.droidnet.DroidNet;
+
 public class CustomAppClass extends Application {
 
     String adult_price;
@@ -16,7 +18,17 @@ public class CustomAppClass extends Application {
     public void onCreate() {
         super.onCreate();
         // Required initialization logic here!
+        DroidNet.init(this);
+
     }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        DroidNet.getInstance().removeAllInternetConnectivityChangeListeners();
+    }
+
+
 
     public String getTo() {
         return to;
