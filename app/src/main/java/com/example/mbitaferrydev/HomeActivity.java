@@ -1,8 +1,9 @@
 package com.example.mbitaferrydev;
 
-import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -24,18 +25,12 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkError;
 import com.android.volley.NetworkResponse;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
@@ -58,6 +53,7 @@ import com.example.mbitaferrydev.Models.SmallAnimal;
 import com.example.mbitaferrydev.Models.SmallTruck;
 import com.example.mbitaferrydev.Models.StationWagon;
 import com.example.mbitaferrydev.Models.TukTuk;
+import com.example.mbitaferrydev.NetworkUtil.Internet_check_service;
 import com.example.mbitaferrydev.PostObject.Request_body;
 import com.example.mbitaferrydev.PostObject.Request_items;
 import com.example.mbitaferrydev.customApplicationClass.CustomAppClass;
@@ -65,11 +61,11 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nbbse.printapi.Printer;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -85,6 +81,7 @@ import spencerstudios.com.fab_toast.FabToast;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, DroidListener {
 
+    private BroadcastReceiver MyReceiver = null;
 
     private static final String TAG = "Number";
     ElegantNumberButton btnadult, btnBigAnumal, btnBigTruck, btnchild, btnLuggage, btnMotorCycle,
@@ -135,6 +132,8 @@ public class HomeActivity extends AppCompatActivity
 
         db = new DatabaseHelper(this);
         app = (CustomAppClass) getApplication();
+        MyReceiver = new Internet_check_service();
+
 
 
         ticketsdb = new TicketsSQLiteDatabaseHandler(this);
@@ -269,8 +268,7 @@ public class HomeActivity extends AppCompatActivity
 
 
                 if (checkConnectivity()) {
-                    reserve();
-                }
+                    reserve_ticket_online();                }
 
 
             }
@@ -1056,29 +1054,25 @@ public class HomeActivity extends AppCompatActivity
 
     }
 
-    private void reserve() {
 
-        ProgressDialog pd = new ProgressDialog(HomeActivity.this);
-        pd.setMessage("Reserving ...");
-        pd.show();
+    private void reserve_ticket_online() {
 
 
+        List<Request_items> ticket_items = new ArrayList<>();
         String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         int total_items = adultnum + biganimalnum + bigtrucknum + childnum + luggagenum +
                 motorCyclenum + othernum + saloonCarnum + smallAnimalnum + smallTrucknum + stationWagonnum + tuktuknum;
         Log.d("Total Items", String.valueOf(total_items));
 
 
-        List<Request_items> request_items_1 = new ArrayList<>();
-
         try {
 
 
-            for (int x = 0; x <= total_items; x++) {
-                request_items_1.add(new Request_items(
+            for (int x = 1; x <= total_items; x++) {
+                ticket_items.add(new Request_items(
 
-                        app.getFrom(),
-                        app.getTo(),
+                        "1",
+                        "2",
                         date,
                         "1",
                         "49",
@@ -1100,137 +1094,73 @@ public class HomeActivity extends AppCompatActivity
         }
 
 
+        Request_body request_body = new Request_body(
+                "emuswailit",
+                "c8e254c0adbe4b2623ff85567027d78d4cc066357627e284d4b4a01b159d97a7",
+                "1FBEAD9B-D9CD-400D-ADF3-F4D0E639CEE0",
+                "BatchReserveSeats",
+                ticket_items);
+
+
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String requestBody = gson.toJson(request_items_1);
+        final String requestBody1 = gson.toJson(request_body);
 
-        requestBody = requestBody.replaceAll("\\s+", "");
-
-//
-//        Type collectionType = new TypeToken<List<Request_items>>() {
-//        }.getType();
-//        List<Request_items> details = gson.fromJson(requestBody, collectionType);
-//        Log.d("jsonObject", details.getClass().getSimpleName());
-//
-//
-//        Request_items[] obj = gson.fromJson(requestBody, Request_items[].class);
-//        Log.d("obj", Arrays.toString(obj));
-
-//        try {
-//
-//            ObjectMapper mapper = new ObjectMapper();
-//            map = mapper.readValue(requestBody, new TypeReference<Map<String, Object>>() {});
-//            Log.d("Map:",map.toString());
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        Log.d("PostBody:", requestBody1);
 
 
-        JSONObject holder = new JSONObject();
+        RequestQueue requestQueue = Volley.newRequestQueue(HomeActivity.this);
 
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiUrls.apiUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("Response", response);
 
-
-        try {
-
-
-            holder.put("username", "muswailit");
-            holder.put("api_key", "c8e254c0adbe4b2623ff85567027d78d4cc066357627e284d4b4a01b159d97a7");
-            holder.put("action", "BatchReserveSeats");
-            holder.put("hash", "1FBEAD9B-D9CD-400D-ADF3-F4D0E639CEE0");
-            holder.put("ticket_items", requestBody);
-
-            Log.d("Holder", holder.toString(4));
-
-
-        } catch (Exception e) {
-
-
-        }
-
-        RequestQueue reserverequestQueue = Volley.newRequestQueue(HomeActivity.this);
-
-        JsonObjectRequest req = new JsonObjectRequest(ApiUrls.apiUrl, holder,
-                response -> {
-                    try {
-
-                        Log.d("Response: ", response.toString(4));
-
-
-                        if (response.getInt("response_code") == 0) {
-                            JSONArray message = response.getJSONArray("ticket_message");
-
-                            pd.dismiss();
-
-                            Toast.makeText(getApplicationContext(), response.getString("response_message"), Toast.LENGTH_LONG).show();
-
-
-                            for (int i = 0; i < message.length(); i++) {
-                                JSONObject jsonObject1 = message.getJSONObject(i);
-                                String ticket_mesaage = jsonObject1.getString("name");
-
-
-                            }
-
-                            JSONArray jsonArray = response.getJSONArray("ticket");
-
-
-                        } else {
-                            Toast.makeText(getApplicationContext(), response.getString("response_message"), Toast.LENGTH_LONG).show();
-                            pd.dismiss();
-
-
-                        }
-
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Log.d("Exception", e.toString());
-
-                    }
-                }, new Response.ErrorListener() {
+                Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
-                Log.e("Volley Error:", error.toString());
-
-
-                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-
-                } else if (error instanceof AuthFailureError) {
-                    Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                } else if (error instanceof ServerError) {
-                    Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                } else if (error instanceof NetworkError) {
-                    Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                } else if (error instanceof ParseError) {
-                    Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                }
+                Log.e("VOLLEY", error.toString());
             }
-
         }) {
             @Override
             public String getBodyContentType() {
-                return "application/x-www-form-urlencoded; charset=utf-8";
+                return "application/json; charset=utf-8";
             }
 
-
-            /**
-             * Passing some request headers
-             * */
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json; charset=utf-8");
-                return headers;
+            public byte[] getBody() throws AuthFailureError {
+
+
+
+                byte[] body = new byte[0];
+                try {
+                    body = requestBody1.getBytes("UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    Log.e(TAG, "Unable to gets bytes from JSON", e.fillInStackTrace());
+                }
+                return body;
             }
 
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                String responseString = "";
+                if (response != null) {
+                    responseString = String.valueOf(response.statusCode);
 
+                    Log.d("Time", String.valueOf(response.networkTimeMs));
+                    Log.d("Headers", String.valueOf(response.headers));
+                    Log.d("Raw Data", new String(response.data));
+
+
+                    // can get more details such as response.headers
+                }
+                return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+            }
         };
 
-        reserverequestQueue.add(req);
-
-
+        requestQueue.add(stringRequest);
     }
 
     private void reserve_update() {
@@ -1324,8 +1254,14 @@ public class HomeActivity extends AppCompatActivity
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public byte[] getBody() throws AuthFailureError {
-                return requestBody == null ? null : requestBody.getBytes(StandardCharsets.UTF_8);
-            }
+                byte[] body = new byte[0];
+                try {
+                    body = requestBody.getBytes("UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    Log.e(TAG, "Unable to gets bytes from JSON", e.fillInStackTrace());
+                }
+                return body;            }
+
 
             @Override
             protected Response<String> parseNetworkResponse(NetworkResponse response) {
@@ -1367,17 +1303,23 @@ public class HomeActivity extends AppCompatActivity
     protected void onDestroy() {
         super.onDestroy();
         mDroidNet.removeInternetConnectivityChangeListener(this);
+        unregisterReceiver(MyReceiver);
+
     }
     @Override
     public void onInternetConnectivityChanged(boolean isConnected) {
 
         if (isConnected) {
             //do Stuff with internet
-            Toast.makeText(getApplicationContext(), "Tickets Syncing..", Toast.LENGTH_SHORT).show();
-//            reserve_update();
+            if (tickets.size() > 0) {
+                Toast.makeText(getApplicationContext(), "Tickets Syncing..", Toast.LENGTH_SHORT).show();
+                reserve_update();
+            }
         } else {
-            //no internet
         }
     }
 
-}
+
+    public void broadcastIntent() {
+        registerReceiver(MyReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }}

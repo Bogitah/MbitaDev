@@ -7,8 +7,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-feature android:name="android.hardware.wifi" />
 
+    <uses-feature android:name="android.hardware.wifi" />
 
     <application
         android:name=".customApplicationClass.CustomAppClass"
@@ -20,7 +20,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".LocalDataActivity"></activity>
+
+        <activity android:name=".LocalDataActivity" />
         <activity
             android:name=".SearchPaymentsActivity"
             android:label="@string/title_activity_search_payments" />
@@ -42,22 +43,31 @@
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".HomeInitialActivity">
-
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
 
                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
+        </activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".HomeInitialActivity">
+
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN" />
+
+
+             <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
 
         </activity>
+
+        <receiver android:name = ".NetworkUtil.Internet_check_service">
+            <intent-filter>
+                <action android:name = "android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name = "android.net.wifi.WIFI_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
