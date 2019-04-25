@@ -17,7 +17,7 @@ public class Request_body  {
 
     String action;
 
-    @SerializedName("request_items")
+    @SerializedName("ticket_items")
 
     List<Request_items> request_items;
 
