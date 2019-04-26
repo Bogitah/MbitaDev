@@ -53,7 +53,7 @@ import com.example.mbitaferrydev.Models.SmallAnimal;
 import com.example.mbitaferrydev.Models.SmallTruck;
 import com.example.mbitaferrydev.Models.StationWagon;
 import com.example.mbitaferrydev.Models.TukTuk;
-import com.example.mbitaferrydev.NetworkUtil.Internet_check_service;
+import com.example.mbitaferrydev.NetworkUtil.NetworkUtil;
 import com.example.mbitaferrydev.PostObject.Request_body;
 import com.example.mbitaferrydev.PostObject.Request_items;
 import com.example.mbitaferrydev.customApplicationClass.CustomAppClass;
@@ -63,7 +63,6 @@ import com.google.gson.GsonBuilder;
 import com.nbbse.printapi.Printer;
 
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -180,6 +179,8 @@ public class HomeActivity extends AppCompatActivity
 
 
         btnBigTruck = findViewById(R.id.btnBigTruck);
+
+        broadcastIntent();
 
 
         if (db.loadTickets().equals("")) {
@@ -1310,10 +1311,7 @@ public class HomeActivity extends AppCompatActivity
         if (isConnected) {
 
 
-            if (tickets.size() > 0) {
-                Toast.makeText(getApplicationContext(), "Tickets Syncing..", Toast.LENGTH_SHORT).show();
-                reserve_update();
-            }
+
 
         } else {
         }
@@ -1326,4 +1324,21 @@ public class HomeActivity extends AppCompatActivity
     }
 
 
+
+
+    public class Internet_check_service extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String status = NetworkUtil.getConnectivityStatusString(context);
+            if(status.isEmpty()) {
+                status="No Internet Connection";
+            }
+            Toast.makeText(context, status, Toast.LENGTH_SHORT).show();
+
+
+//            if (tickets.size() > 0) {
+                Toast.makeText(getApplicationContext(), "Tickets Syncing..", Toast.LENGTH_SHORT).show();
+                reserve_update();
+
+        }}
 }
