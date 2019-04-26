@@ -53,7 +53,7 @@ import com.example.mbitaferrydev.Models.SmallAnimal;
 import com.example.mbitaferrydev.Models.SmallTruck;
 import com.example.mbitaferrydev.Models.StationWagon;
 import com.example.mbitaferrydev.Models.TukTuk;
-import com.example.mbitaferrydev.NetworkUtil.Internet_check_service;
+import com.example.mbitaferrydev.NetworkUtil.NetworkUtil;
 import com.example.mbitaferrydev.PostObject.Request_body;
 import com.example.mbitaferrydev.PostObject.Request_items;
 import com.example.mbitaferrydev.customApplicationClass.CustomAppClass;
@@ -61,12 +61,8 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nbbse.printapi.Printer;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -74,9 +70,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import spencerstudios.com.fab_toast.FabToast;
-
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, DroidListener {
@@ -174,7 +167,7 @@ public class HomeActivity extends AppCompatActivity
 
 
         Log.d("Inserted: ", db.loadTickets());
-        FabToast.makeText(getApplicationContext(), "Tickets Available " + db.loadTickets(),FabToast.LENGTH_SHORT,FabToast.INFORMATION,FabToast.POSITION_DEFAULT).show();
+        Toast.makeText(getApplicationContext(), "Tickets Available " + db.loadTickets(), Toast.LENGTH_SHORT).show();
 
         // list all players
         tickets = ticketsdb.allTickets();
@@ -186,6 +179,8 @@ public class HomeActivity extends AppCompatActivity
 
 
         btnBigTruck = findViewById(R.id.btnBigTruck);
+
+        broadcastIntent();
 
 
         if (db.loadTickets().equals("")) {
@@ -228,7 +223,6 @@ public class HomeActivity extends AppCompatActivity
 
                     Toast.makeText(HomeActivity.this, "Reference Numbers finished,Go Online to load", Toast.LENGTH_SHORT).show();
                 }
-
 
                 chkAdult.setChecked(false);
                 btnadult.setNumber(String.valueOf(0));
@@ -1299,6 +1293,7 @@ public class HomeActivity extends AppCompatActivity
 
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -1306,20 +1301,43 @@ public class HomeActivity extends AppCompatActivity
         unregisterReceiver(MyReceiver);
 
     }
+
+
     @Override
     public void onInternetConnectivityChanged(boolean isConnected) {
 
+
         if (isConnected) {
-            //do Stuff with internet
-            if (tickets.size() > 0) {
-                Toast.makeText(getApplicationContext(), "Tickets Syncing..", Toast.LENGTH_SHORT).show();
-                reserve_update();
-            }
+
+
+
+
         } else {
         }
+
     }
 
 
     public void broadcastIntent() {
         registerReceiver(MyReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-    }}
+    }
+
+
+
+
+    public class Internet_check_service extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String status = NetworkUtil.getConnectivityStatusString(context);
+            if(status.isEmpty()) {
+                status="No Internet Connection";
+            }
+            Toast.makeText(context, status, Toast.LENGTH_SHORT).show();
+
+
+//            if (tickets.size() > 0) {
+            Toast.makeText(getApplicationContext(), "Tickets Syncing..", Toast.LENGTH_SHORT).show();
+            reserve_update();
+
+        }}
+}

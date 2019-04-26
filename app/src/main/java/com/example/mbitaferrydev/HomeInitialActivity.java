@@ -135,8 +135,7 @@ public class HomeInitialActivity extends AppCompatActivity {
 
                 dialog = new Dialog(context);
                 dialog.setContentView(R.layout.login_dialog);
-                dialog.setTitle("      Account Login");
-
+                dialog.setTitle("Account Login");
 
                 username = dialog.findViewById(R.id.editTextusername);
                 password = dialog.findViewById(R.id.editTextpassword);
