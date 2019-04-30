@@ -1,5 +1,4 @@
 package com.example.mbitaferrydev.NetworkUtil;
-
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;

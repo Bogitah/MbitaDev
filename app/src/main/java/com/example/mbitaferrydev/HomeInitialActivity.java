@@ -468,9 +468,7 @@ public class HomeInitialActivity extends AppCompatActivity {
                                 // Inserting Contacts
                                 ticketsdb.createRef(new ReffNumber(Integer.valueOf(id), refs));
 
-
                             }
-
 
                         } else {
                             Toast.makeText(getApplicationContext(), response.getString("response_message"), Toast.LENGTH_SHORT).show();

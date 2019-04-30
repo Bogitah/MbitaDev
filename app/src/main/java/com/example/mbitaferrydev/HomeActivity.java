@@ -1230,7 +1230,7 @@ public class HomeActivity extends AppCompatActivity
             public void onResponse(String response) {
                 Log.d("Response", response);
 
-//                ticketsdb.deleteAll();
+                ticketsdb.deleteAll();
 
                 Toast.makeText(getApplicationContext(), "All Tickets Synced", Toast.LENGTH_SHORT).show();
             }
@@ -1256,7 +1256,6 @@ public class HomeActivity extends AppCompatActivity
                 }
                 return body;            }
 
-
             @Override
             protected Response<String> parseNetworkResponse(NetworkResponse response) {
                 String responseString = "";
@@ -1267,7 +1266,6 @@ public class HomeActivity extends AppCompatActivity
                     Log.d("Headers", String.valueOf(response.headers));
                     Log.d("Raw Data", new String(response.data));
 
-
                     // can get more details such as response.headers
                 }
                 return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
@@ -1276,7 +1274,6 @@ public class HomeActivity extends AppCompatActivity
 
         requestQueue.add(stringRequest);
     }
-
 
     private boolean checkConnectivity() {
         boolean enabled = true;
